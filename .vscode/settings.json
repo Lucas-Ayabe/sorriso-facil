@@ -11,7 +11,7 @@
     "public": false,
     ".editorconfig": true,
     ".eslintrc.json": true,
-    ".gitignore": true,
+    ".gitignore": false,
     "next-env.d.ts": false,
     "next.config.js": false,
     "README.md": true,
