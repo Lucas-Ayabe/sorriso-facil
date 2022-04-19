@@ -2,10 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@config/*": ["config/*"],
       "@modules": ["app/modules/index.ts"],
       "@modules/*": ["app/modules/*"],
       "@components": ["app/components/index.ts"],
       "@components/*": ["app/components/*"],
+      "@types": ["app/types/index.ts"],
+      "@types/*": ["app/types/*"],
       "@": ["app/index.ts"],
       "@/*": ["app/*"]
     },

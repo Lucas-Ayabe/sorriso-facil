@@ -12,8 +12,8 @@
     ".editorconfig": true,
     ".eslintrc.json": true,
     ".gitignore": true,
-    "next-env.d.ts": true,
-    "next.config.js": true,
+    "next-env.d.ts": false,
+    "next.config.js": false,
     "README.md": true,
     "yarn.lock": true
   }

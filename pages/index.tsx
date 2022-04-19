@@ -1,9 +1,15 @@
 import Head from "next/head";
-import type { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import { Layout } from "@components";
 import { Counter } from "@modules/counter";
 
 const Home = () => {
+  useEffect(() => {
+    fetch("/api/hello")
+      .then((response) => response.json())
+      .then(console.log);
+  }, []);
+
   return (
     <div>
       <Head>

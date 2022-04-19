@@ -1,12 +1,13 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { ironSessionConfig } from "@config/iron-session";
+import { withIronSessionApiRoute } from "iron-session/next";
+import { ApiRoute } from "@types";
 
 type Data = {
   name: string;
 };
 
-export default function hello(
-  _req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
+const handler: ApiRoute<Data> = async (_req, res) => {
   res.status(200).json({ name: "John Doe" });
-}
+};
+
+export default withIronSessionApiRoute(handler, ironSessionConfig);
