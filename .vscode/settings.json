@@ -1,4 +1,6 @@
 {
+  "cssvar.files": ["./node_modules/open-props/open-props.min.css"],
+  "cssvar.extensions": ["css", "html", "jsx", "tsx"],
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,

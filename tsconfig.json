@@ -9,6 +9,8 @@
       "@components/*": ["app/components/*"],
       "@types": ["app/types/index.ts"],
       "@types/*": ["app/types/*"],
+      "@hooks": ["app/hooks/index.ts"],
+      "@hooks/*": ["app/hooks/*"],
       "@": ["app/index.ts"],
       "@/*": ["app/*"]
     },

@@ -1,0 +1,22 @@
+.login {
+  padding: var(--size-10);
+}
+
+.form {
+  --flow: 1.5em;
+  background: #fff;
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-6);
+  padding: var(--font-size-5) var(--font-size-6);
+  text-align: center;
+}
+
+.form label {
+  text-align: left;
+}
+
+.title {
+  font-size: var(--font-size-5);
+  font-weight: var(--font-weight-6);
+  text-align: center;
+}

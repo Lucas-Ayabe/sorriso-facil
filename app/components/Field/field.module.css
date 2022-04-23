@@ -1,0 +1,28 @@
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: var(--font-size-2);
+  margin-bottom: 0.25em;
+}
+
+.input {
+  --input-background: #fff;
+  --input-color: #000;
+
+  background: var(--input-background);
+  border: var(--border-size-1) solid var(--gray-5);
+  border-radius: var(--radius-2);
+  color: var(--input-color);
+
+  font-family: inherit;
+  font-size: inherit;
+
+  padding: var(--size-2);
+}
+
+.input:focus {
+  outline: none;
+}

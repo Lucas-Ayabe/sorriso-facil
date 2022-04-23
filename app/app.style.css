@@ -1,0 +1,54 @@
+:root {
+  --shadow-strength: 2.5%;
+  --primary-color: var(--blue-5);
+  --primary-dark: var(--blue-7);
+
+  background: var(--gray-2);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: min(calc(100% - 2rem), 50rem);
+  margin-inline: auto;
+}
+
+.flow {
+  --flow: 1em;
+}
+
+.flow > * + * {
+  margin-top: var(--flow);
+}
+
+.button {
+  --button-color: var(--primary-color);
+  --button-dark: var(--primary-dark);
+  --button-text: #fff;
+  --button-size: var(--size-3);
+
+  cursor: pointer;
+  display: inline-block;
+
+  background: var(--button-color);
+  border: var(--border-size-1) solid var(--button-color);
+  border-radius: var(--radius-2);
+  color: var(--button-text);
+
+  font-family: inherit;
+  font-size: inherit;
+  text-transform: uppercase;
+
+  padding: var(--button-size) calc(var(--button-size) * 1.5);
+  transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+  background: var(--button-dark);
+}
