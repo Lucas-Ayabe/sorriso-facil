@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@pages/*": ["pages/*"],
       "@config/*": ["config/*"],
       "@modules": ["app/modules/index.ts"],
       "@modules/*": ["app/modules/*"],

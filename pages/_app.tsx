@@ -8,11 +8,11 @@ import type { ReactElement, ReactNode } from "react";
 import { Provider } from "react-redux";
 import { store } from "@";
 
-type NextPageWithLayout = NextPage & {
+export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
-type AppPropsWithLayout = AppProps & {
+export type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 

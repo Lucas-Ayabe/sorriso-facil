@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { ReactElement, useEffect } from "react";
-import { Layout } from "@components";
-import { Counter } from "@modules/counter";
+import { Dashboard, Field } from "@components";
 
 const Home = () => {
   useEffect(() => {
@@ -11,7 +10,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <Head>
         <title>Home</title>
         <meta
@@ -21,17 +20,19 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Hello World!</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Blanditiis
-        error illo animi est a accusantium veniam sint eum nihil eveniet iure,
-        sed quas dolores distinctio laboriosam modi sequi? Iure, animi?
-      </p>
+      <div className="flow">
+        <h1>Adicionar Serviço</h1>
 
-      <Counter />
-    </div>
+        <form className="card flow" style={{ ["--card-space"]: "2em" } as any}>
+          <Field>Nome do serviço</Field>
+          <Field>Serviço</Field>
+
+          <button className="button--small">Enviar</button>
+        </form>
+      </div>
+    </>
   );
 };
 
-Home.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
+Home.getLayout = (page: ReactElement) => <Dashboard>{page}</Dashboard>;
 export default Home;

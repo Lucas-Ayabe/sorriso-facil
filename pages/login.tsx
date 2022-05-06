@@ -5,13 +5,14 @@ import classNames from "classnames";
 import styles from "@modules/auth/styles/login.module.css";
 import { Field } from "@components";
 import { useTextField } from "@hooks";
+import { NextPageWithLayout } from "./_app";
 
 const classes = {
   login: classNames(styles.login),
   form: classNames(styles.form, "container", "flow"),
 };
 
-const Login = () => {
+const Login: NextPageWithLayout = () => {
   const emailProps = useTextField("");
   const passwordProps = useTextField("");
 
@@ -34,5 +35,7 @@ const Login = () => {
     </div>
   );
 };
+
+Login.getLayout = (page) => page;
 
 export default Login;
