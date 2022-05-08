@@ -1,13 +1,11 @@
 import classNames from "classnames";
 import { PropsWithChildren, useState } from "react";
 import styles from "./dashboard.module.css";
-import {
-  CgMenu,
-  CgEnter,
-  CgCalendar,
-  CgBriefcase,
-  CgUser,
-} from "react-icons/cg";
+import { CgMenu, CgEnter } from "react-icons/cg";
+import { useLoggedUser } from "@hooks";
+import { dentistRoutes } from "@/routes/dentist";
+import { adminRoutes } from "@/routes/admin";
+import Link from "next/link";
 
 const baseClasses = {
   dashboard: {
@@ -24,6 +22,8 @@ const baseClasses = {
 };
 
 export const Dashboard = ({ children }: PropsWithChildren<{}>) => {
+  const loggedUser = useLoggedUser();
+  const routes = loggedUser.isAdmin ? adminRoutes : dentistRoutes;
   const [open, setOpen] = useState(false);
   const { dashboard, sidebar } = {
     ...baseClasses,
@@ -45,24 +45,16 @@ export const Dashboard = ({ children }: PropsWithChildren<{}>) => {
           Sorriso Simples
         </a>
         <ul className={sidebar.menu}>
-          <li className={sidebar.item}>
-            <a href="#" className={sidebar.link}>
-              <CgCalendar />
-              <span>Agenda</span>
-            </a>
-          </li>
-          <li className={sidebar.item}>
-            <a href="#" className={sidebar.link}>
-              <CgBriefcase />
-              <span>Serviços</span>
-            </a>
-          </li>
-          <li className={sidebar.item}>
-            <a href="#" className={sidebar.link}>
-              <CgUser />
-              <span>Clientes</span>
-            </a>
-          </li>
+          {routes.map(({ icon: Icon, route, text }) => (
+            <li key={route + text} className={sidebar.item}>
+              <Link href={route} passHref>
+                <a className={sidebar.link}>
+                  <Icon />
+                  <span>{text}</span>
+                </a>
+              </Link>
+            </li>
+          ))}
         </ul>
 
         <div className={sidebar.item}>

@@ -36,6 +36,7 @@
   background: var(--primary-color);
   color: var(--contrast-color);
   font-size: var(--font-size-4);
+  box-shadow: var(--shadow-6);
   padding: 1em;
 
   transition: all 0.3s var(--ease-5);
@@ -86,6 +87,12 @@
   font-size: inherit;
   color: inherit;
   text-decoration: none;
+  padding: 0.5em;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar__link:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .sidebar__link svg {
