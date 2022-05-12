@@ -26,24 +26,6 @@ const Users = () => {
         name: "Bar Foo",
         role: "Dentista",
       },
-      {
-        id: "user-03",
-        email: "john.doe@example.com",
-        name: "John Doe",
-        role: "Dentista",
-      },
-      {
-        id: "user-04",
-        email: "jane.doe@example.com",
-        name: "Jane Doe",
-        role: "Dentista",
-      },
-      {
-        id: "user-05",
-        email: "bar.bazz@example.com",
-        name: "Bar Bazz",
-        role: "Dentista",
-      },
     ],
     []
   );
@@ -88,7 +70,7 @@ const Users = () => {
 
       <div className="flow">
         <h1>Usuários</h1>
-        <figure className="card table--wrapper">
+        <figure className="table--wrapper">
           <table {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup) => (
@@ -117,7 +99,8 @@ const Users = () => {
             <tbody {...getTableBodyProps()}>
               {rows.map((row, rowIdx) => {
                 prepareRow(row);
-                const isNearBottom = rowIdx + 2 < rows.length;
+                const bottomOffset = rows.length > 2 ? 2 : 0;
+                const isNearBottom = rowIdx + bottomOffset < rows.length;
                 const positionDirection = isNearBottom ? "top" : "bottom";
 
                 return (

@@ -113,6 +113,7 @@
 }
 
 .dashboard__content {
+  background: #fff;
   padding-block: calc(1em + var(--hamburger-size));
 }
 
