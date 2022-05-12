@@ -19,13 +19,14 @@
   color: var(--contrast-color);
   border: none;
 
-  z-index: 2;
+  z-index: 11;
 }
 
 .sidebar {
   position: fixed;
   top: 0;
   left: -100%;
+  z-index: 10;
 
   width: min(100%, 300px);
   height: 100vh;
