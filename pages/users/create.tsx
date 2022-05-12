@@ -1,14 +1,6 @@
 import Head from "next/head";
 import { ReactElement } from "react";
-import {
-  CgChevronDown,
-  CgDetailsMore,
-  CgMoreVerticalAlt,
-  CgPen,
-  CgTrash,
-  CgTrashEmpty,
-} from "react-icons/cg";
-import { Dashboard, Dropdown } from "@components";
+import { Dashboard } from "@components";
 
 const Create = () => {
   return (
@@ -24,26 +16,6 @@ const Create = () => {
 
       <div className="flow">
         <h1>Criar Usuário</h1>
-
-        <Dropdown
-          options={[
-            {
-              id: "details",
-              icon: CgDetailsMore,
-              text: "Mostrar detalhes",
-            },
-            {
-              id: "update",
-              icon: CgPen,
-              text: "Atualizar Usuário",
-            },
-            {
-              id: "delete",
-              icon: CgTrash,
-              text: "Excluir Usuário",
-            },
-          ]}
-        />
       </div>
     </>
   );

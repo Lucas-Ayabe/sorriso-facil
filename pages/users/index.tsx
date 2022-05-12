@@ -1,9 +1,15 @@
 import Head from "next/head";
 import { ReactElement, useMemo, Fragment } from "react";
-import { Dashboard } from "@components";
+import { Dashboard, Dropdown } from "@components";
 import { useSortBy, useTable } from "react-table";
 import { Menu, Transition } from "@headlessui/react";
-import { CgChevronDown, CgTrash, CgTrashEmpty } from "react-icons/cg";
+import {
+  CgChevronDown,
+  CgDetailsMore,
+  CgPen,
+  CgTrash,
+  CgTrashEmpty,
+} from "react-icons/cg";
 
 const Users = () => {
   const data = useMemo(
@@ -111,7 +117,9 @@ const Users = () => {
             <tbody {...getTableBodyProps()}>
               {rows.map((row, rowIdx) => {
                 prepareRow(row);
-                const cellId = data.find((_, pos) => pos === rowIdx);
+                const isNearBottom = rowIdx + 2 < rows.length;
+                const positionDirection = isNearBottom ? "top" : "bottom";
+
                 return (
                   <tr {...row.getRowProps()} key={rowIdx}>
                     {row.cells.map((cell) => (
@@ -119,109 +127,29 @@ const Users = () => {
                       <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                     ))}
                     <td key={"user-actions-" + rowIdx}>
-                      <Menu as="div" className="dropdown">
-                        <div>
-                          <Menu.Button className="button--small">
-                            Options
-                            <CgChevronDown
-                              className="arrow"
-                              aria-hidden="true"
-                            />
-                          </Menu.Button>
-                        </div>
-                        <Transition
-                          as={Fragment}
-                          enter="enter"
-                          enterFrom="enter-from"
-                          enterTo="enter-to"
-                          leave="enter-leave"
-                          leaveFrom="leave-from"
-                          leaveTo="leave-to"
-                        >
-                          <Menu.Items className="content">
-                            <div className="divider">
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    className={`${active ? "active" : ""} item`}
-                                  >
-                                    <span className="icon">
-                                      {active ? (
-                                        <CgTrash
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      ) : (
-                                        <CgTrashEmpty
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                    </span>
-                                    <span className="text">
-                                      Mostrar detalhes
-                                    </span>
-                                  </button>
-                                )}
-                              </Menu.Item>
-                            </div>
-
-                            <div className="divider">
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    className={`${active ? "active" : ""} item`}
-                                  >
-                                    <span className="icon">
-                                      {active ? (
-                                        <CgTrash
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      ) : (
-                                        <CgTrashEmpty
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                    </span>
-                                    <span className="text">
-                                      Editar {cellId?.id}
-                                    </span>
-                                  </button>
-                                )}
-                              </Menu.Item>
-                            </div>
-
-                            <div className="divider">
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    className={`${active ? "active" : ""} item`}
-                                  >
-                                    <span className="icon">
-                                      {active ? (
-                                        <CgTrash
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      ) : (
-                                        <CgTrashEmpty
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                    </span>
-                                    <span className="text">
-                                      Excluir {cellId?.id}
-                                    </span>
-                                  </button>
-                                )}
-                              </Menu.Item>
-                            </div>
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
+                      <Dropdown
+                        position={{
+                          [positionDirection]: "calc(100% + 0.5em)",
+                          right: 0,
+                        }}
+                        options={[
+                          {
+                            id: "details",
+                            icon: CgDetailsMore,
+                            text: "Mostrar detalhes",
+                          },
+                          {
+                            id: "update",
+                            icon: CgPen,
+                            text: "Atualizar Usuário",
+                          },
+                          {
+                            id: "delete",
+                            icon: CgTrash,
+                            text: "Excluir Usuário",
+                          },
+                        ]}
+                      />
                     </td>
                   </tr>
                 );

@@ -16,9 +16,15 @@ export interface DropdownOption {
 
 export interface DropdownProps {
   options: DropdownOption[];
+  position?: Partial<{
+    top: number | string;
+    left: number | string;
+    right: number | string;
+    bottom: number | string;
+  }>;
 }
 
-export const Dropdown = ({ options }: DropdownProps) => {
+export const Dropdown = ({ options, position }: DropdownProps) => {
   return (
     <Menu as="div" className={styles.dropdown}>
       <div>
@@ -28,7 +34,7 @@ export const Dropdown = ({ options }: DropdownProps) => {
       </div>
 
       <FadeInTranstion>
-        <Menu.Items className={styles.items}>
+        <Menu.Items className={classNames(styles.items)} style={position}>
           {options?.map(({ id, text, icon: Icon, onClick }) => (
             <div key={id} className={classNames("divider", styles.item)}>
               <Menu.Item>

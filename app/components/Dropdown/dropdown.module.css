@@ -12,8 +12,23 @@
   padding: 0.5em;
 
   position: absolute;
-  top: calc(100% + 0.5em);
   z-index: 3;
+}
+
+.dropdown .items.top {
+  bottom: 100%;
+}
+
+.dropdown .items.left {
+  right: 100%;
+}
+
+.dropdown .items.bottom {
+  top: 100%;
+}
+
+.dropdown .items.right {
+  left: 100%;
 }
 
 .dropdown .option {
