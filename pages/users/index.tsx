@@ -1,17 +1,13 @@
 import Head from "next/head";
-import { ReactElement, useMemo, Fragment } from "react";
+import { ReactElement, useMemo } from "react";
 import { Dashboard, Dropdown } from "@components";
 import { useSortBy, useTable } from "react-table";
-import { Menu, Transition } from "@headlessui/react";
-import {
-  CgChevronDown,
-  CgDetailsMore,
-  CgPen,
-  CgTrash,
-  CgTrashEmpty,
-} from "react-icons/cg";
+import { CgDetailsMore, CgPen, CgTrash } from "react-icons/cg";
+import { useElementSize } from "usehooks-ts";
 
 const Users = () => {
+  const [tableRef, { height }] = useElementSize();
+
   const data = useMemo(
     () => [
       {
@@ -22,6 +18,24 @@ const Users = () => {
       },
       {
         id: "user-02",
+        email: "bar.foo@example.com",
+        name: "Bar Foo",
+        role: "Dentista",
+      },
+      {
+        id: "user-03",
+        email: "bar.foo@example.com",
+        name: "Bar Foo",
+        role: "Dentista",
+      },
+      {
+        id: "user-04",
+        email: "bar.foo@example.com",
+        name: "Bar Foo",
+        role: "Dentista",
+      },
+      {
+        id: "user-05",
         email: "bar.foo@example.com",
         name: "Bar Foo",
         role: "Dentista",
@@ -70,8 +84,11 @@ const Users = () => {
 
       <div className="flow">
         <h1>Usuários</h1>
-        <figure className="table--wrapper">
-          <table {...getTableProps()}>
+        <figure
+          style={{ height: data.length <= 2 ? height + 160 : "auto" }}
+          className="table--wrapper"
+        >
+          <table ref={tableRef} {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup) => (
                 // eslint-disable-next-line react/jsx-key

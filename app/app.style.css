@@ -6,7 +6,7 @@
   --contrast-color: var(--gray-2);
   --container-gap: 2rem;
 
-  background: var(--contrast-color);
+  background: #fff;
   font-family: var(--font-sans);
   font-size: var(--font-size-1);
 }
