@@ -1,3 +1,5 @@
+import styles from "./dropdown.module.css";
+
 import React from "react";
 import { Menu } from "@headlessui/react";
 import { IconType } from "react-icons";
@@ -5,7 +7,6 @@ import { CgMoreVerticalAlt } from "react-icons/cg";
 import classNames from "classnames";
 
 import { FadeInTranstion } from "@modules/animations";
-import styles from "./dropdown.module.css";
 
 export interface DropdownOption {
   icon: IconType;

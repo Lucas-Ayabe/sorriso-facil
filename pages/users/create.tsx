@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { ReactElement } from "react";
-import { Dashboard } from "@components";
+import { Dashboard } from "@modules/ui/components";
 
 const Create = () => {
   return (

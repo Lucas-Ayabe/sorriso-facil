@@ -1,75 +1,91 @@
 import Head from "next/head";
-import { ReactElement, useMemo } from "react";
-import { Dashboard, Dropdown } from "@components";
-import { useSortBy, useTable } from "react-table";
-import { CgDetailsMore, CgPen, CgTrash } from "react-icons/cg";
-import { useElementSize } from "usehooks-ts";
+import { ReactElement } from "react";
+import { Dashboard } from "@modules/ui/components";
+import { columnFormatters as format, DataTable } from "@modules/data";
+import { useDataTable } from "@modules/data/hooks/use-data-table";
+import { CgList } from "react-icons/cg";
+
+const data = [
+  {
+    id: 1,
+    name: "Lucas",
+    age: 18,
+    birthdate: new Date("2002-04-12"),
+  },
+  {
+    id: 2,
+    name: "Lucas",
+    age: 18,
+    birthdate: new Date("2002-04-12"),
+  },
+  {
+    id: 3,
+    name: "Lucas",
+    age: 18,
+    birthdate: new Date("2002-04-12"),
+  },
+];
 
 const Users = () => {
-  const [tableRef, { height }] = useElementSize();
-
-  const data = useMemo(
-    () => [
+  const table = useDataTable(
+    [
       {
-        id: "user-01",
-        email: "foo.bar@example.com",
-        name: "Foo Bar",
-        role: "Administrador",
+        acessor: "id",
+        label: "ID",
+        format: format.string,
       },
       {
-        id: "user-02",
-        email: "bar.foo@example.com",
-        name: "Bar Foo",
-        role: "Dentista",
+        acessor: "name",
+        label: "Nome",
+        format: format.string,
       },
       {
-        id: "user-03",
-        email: "bar.foo@example.com",
-        name: "Bar Foo",
-        role: "Dentista",
+        acessor: "age",
+        label: "Idade",
+        format: format.number,
       },
       {
-        id: "user-04",
-        email: "bar.foo@example.com",
-        name: "Bar Foo",
-        role: "Dentista",
-      },
-      {
-        id: "user-05",
-        email: "bar.foo@example.com",
-        name: "Bar Foo",
-        role: "Dentista",
+        acessor: "birthdate",
+        label: "Data de nascimento",
+        format: format.date("pt-BR"),
       },
     ],
-    []
+    data,
+    [
+      {
+        id: "list",
+        icon: CgList,
+        text: "List",
+        onClick(item) {
+          alert(item.name);
+        },
+      },
+      {
+        id: "list-01",
+        icon: CgList,
+        text: "List",
+        onClick(item) {
+          alert(item.name);
+        },
+      },
+      {
+        id: "list-02",
+        icon: CgList,
+        text: "List",
+        onClick(item) {
+          alert(item.name);
+        },
+      },
+      {
+        id: "list-03",
+        icon: CgList,
+        text: "List",
+        onClick(item) {
+          alert(item.name);
+        },
+      },
+    ]
   );
-
-  const columns = useMemo(
-    () => [
-      {
-        accessor: "name",
-        Header: "Nome",
-      },
-      {
-        accessor: "email",
-        Header: "E-mail",
-      },
-      {
-        accessor: "role",
-        Header: "Função",
-      },
-    ],
-    []
-  );
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns: columns as any,
-        data,
-      },
-      useSortBy
-    );
 
   return (
     <>
@@ -84,79 +100,8 @@ const Users = () => {
 
       <div className="flow">
         <h1>Usuários</h1>
-        <figure
-          style={{ height: data.length <= 2 ? height + 160 : "auto" }}
-          className="table--wrapper"
-        >
-          <table ref={tableRef} {...getTableProps()}>
-            <thead>
-              {headerGroups.map((headerGroup) => (
-                // eslint-disable-next-line react/jsx-key
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column: any) => {
-                    const sortIcon = column.isSortedDec ? " 🔽" : " 🔼";
-                    return (
-                      // eslint-disable-next-line react/jsx-key
-                      <th
-                        {...column.getHeaderProps(
-                          column.getSortByToggleProps()
-                        )}
-                      >
-                        {column.render("Header")}
-                        <span role="columnheader">
-                          {column.isSorted ? sortIcon : ""}
-                        </span>
-                      </th>
-                    );
-                  })}
-                  <th>Ações</th>
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row, rowIdx) => {
-                prepareRow(row);
-                const bottomOffset = rows.length > 2 ? 2 : 0;
-                const isNearBottom = rowIdx + bottomOffset < rows.length;
-                const positionDirection = isNearBottom ? "top" : "bottom";
 
-                return (
-                  <tr {...row.getRowProps()} key={rowIdx}>
-                    {row.cells.map((cell) => (
-                      // eslint-disable-next-line react/jsx-key
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    ))}
-                    <td key={"user-actions-" + rowIdx}>
-                      <Dropdown
-                        position={{
-                          [positionDirection]: "calc(100% + 0.5em)",
-                          right: 0,
-                        }}
-                        options={[
-                          {
-                            id: "details",
-                            icon: CgDetailsMore,
-                            text: "Mostrar detalhes",
-                          },
-                          {
-                            id: "update",
-                            icon: CgPen,
-                            text: "Atualizar Usuário",
-                          },
-                          {
-                            id: "delete",
-                            icon: CgTrash,
-                            text: "Excluir Usuário",
-                          },
-                        ]}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </figure>
+        <DataTable {...table} />
       </div>
     </>
   );

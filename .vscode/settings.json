@@ -5,6 +5,7 @@
   ],
   "cssvar.extensions": ["css", "html", "jsx", "tsx"],
   "files.exclude": {
+    // Project configuration files
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,
@@ -13,13 +14,34 @@
     "**/Thumbs.db": true,
     ".next": true,
     "node_modules": true,
-    "public": false,
     ".editorconfig": true,
     ".eslintrc.json": true,
-    ".gitignore": false,
-    "next-env.d.ts": false,
-    "next.config.js": false,
+    ".gitignore": true,
+    "next-env.d.ts": true,
+    "next.config.js": true,
     "README.md": true,
-    "yarn.lock": true
+    "yarn.lock": true,
+    "yarn-error.log": true,
+    ".env": true,
+    ".env.local": true,
+
+    // Application folders
+    "public": true,
+    "config": true,
+
+    // App
+    "app/components": true,
+    "app/hooks": true,
+    "app/routes": true,
+    "app/types": true,
+    "app/app.slice.ts": true,
+    "app/app.style.css": true,
+    "app/store.ts": true,
+    "app/index.ts": true,
+
+    // Modules
+    "app/modules/animations": true,
+    "app/modules/auth": true,
+    "app/modules/forms": true
   }
 }

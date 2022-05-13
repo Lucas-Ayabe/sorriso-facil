@@ -1,11 +1,12 @@
-import classNames from "classnames";
-import { PropsWithChildren, useState } from "react";
 import styles from "./dashboard.module.css";
+
+import { PropsWithChildren, useState } from "react";
 import { CgMenu, CgEnter } from "react-icons/cg";
-import { useLoggedUser } from "@hooks";
-import { dentistRoutes } from "@/routes/dentist";
-import { adminRoutes } from "@/routes/admin";
 import Link from "next/link";
+import classNames from "classnames";
+
+import { routes as appRoutes } from "@/routes";
+import { useLoggedUser } from "@modules/auth";
 
 const baseClasses = {
   dashboard: {
@@ -23,7 +24,7 @@ const baseClasses = {
 
 export const Dashboard = ({ children }: PropsWithChildren<{}>) => {
   const loggedUser = useLoggedUser();
-  const routes = loggedUser.isAdmin ? adminRoutes : dentistRoutes;
+  const routes = loggedUser.isAdmin ? appRoutes.admin : appRoutes.dentist;
   const [open, setOpen] = useState(false);
   const { dashboard, sidebar } = {
     ...baseClasses,
