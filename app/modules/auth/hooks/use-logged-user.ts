@@ -1,6 +1,5 @@
-import { select } from "@/app.slice";
-import { useAppSelector } from "@hooks/use-app-selector";
+import { useLocalStorage } from "usehooks-ts";
 
 export function useLoggedUser() {
-  return useAppSelector(select.loggedUser);
+  return useLocalStorage("@auth:user", { admin: false, token: "" });
 }

@@ -27,16 +27,14 @@
   top: 0;
   left: -100%;
   z-index: 10;
-
-  width: min(100%, 300px);
   height: 100vh;
 
   display: flex;
   flex-direction: column;
 
-  background: var(--primary-color);
-  color: var(--contrast-color);
-  font-size: var(--font-size-4);
+  background: #fff;
+  font-size: var(--font-size-3);
+  width: var(--sidebar-width);
   box-shadow: var(--shadow-6);
   padding: 1em;
 
@@ -47,23 +45,29 @@
   left: 0;
 }
 
+.sidebar,
+.sidebar__placeholder {
+  --sidebar-width: min(100%, 300px);
+}
+
+.sidebar__placeholder {
+  display: none;
+}
+
 .sidebar__menu {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   flex: 1;
+  padding-top: 1.75em;
 
   font-size: inherit;
-}
-
-.sidebar__brand {
-  margin-top: var(--hamburger-size);
 }
 
 .sidebar__brand,
 .sidebar__link {
   color: inherit;
   text-decoration: none;
+  text-align: center;
 }
 
 .sidebar__brand,
@@ -74,6 +78,9 @@
 .sidebar__brand {
   font-size: var(--font-size-4);
   font-weight: var(--font-weight-7);
+  color: var(--gray-7);
+
+  margin-top: var(--hamburger-size);
 }
 
 .sidebar__item {
@@ -97,6 +104,7 @@
 }
 
 .sidebar__link svg {
+  color: var(--primary-color);
   transition: all 0.3s var(--ease-elastic-5);
 }
 
@@ -113,7 +121,7 @@
 }
 
 .dashboard__content {
-  background: #fff;
+  background: var(--contrast-color);
   padding-block: calc(1em + var(--hamburger-size));
 }
 
@@ -122,10 +130,33 @@
 }
 
 @media screen and (min-width: 800px) {
+  .sidebar__placeholder {
+    display: block;
+    grid-area: sidebar;
+  }
+
+  .dashboard__content {
+    grid-area: content;
+  }
+
+  .dashboard__header {
+    grid-area: header;
+
+    background: var(--primary-light);
+    height: var(--hamburger-size);
+    padding: 0;
+    box-sizing: content-box;
+  }
+
+  .sidebar {
+    box-shadow: none;
+  }
+
   .sidebar,
-  .sidebar.isOpen {
-    width: auto;
-    position: static;
+  .sidebar.isOpen,
+  .dashboard {
+    --sidebar-width: 250px;
+    left: 0;
   }
 
   .sidebar__brand {
@@ -138,10 +169,18 @@
 
   .dashboard {
     display: grid;
-    grid-template-columns: minmax(300px, 25%) 1fr;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "sidebar header"
+      "sidebar content";
   }
 
   .dashboard__content {
     padding-block: var(--font-size-4);
+  }
+
+  .sidebar__brand {
+    font-size: var(--font-size-3);
   }
 }

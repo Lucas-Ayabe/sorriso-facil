@@ -18,7 +18,7 @@ export interface DataTableProps<T extends {}> {
   keyExtractor: (item: T, index: string | number) => Key;
 }
 
-const actionHeight = 39;
+const actionHeight = 43;
 const dropdownPadding = 16;
 const shadowOffset = 32;
 
@@ -32,11 +32,13 @@ export const DataTable = <T extends {}>(props: DataTableProps<T>) => {
   };
 
   return (
-    <figure className="table--wrappper" style={dynamicHeight}>
-      <table ref={tableRef}>
-        <DataTableHead columns={columns} />
-        <DataTableBody {...props} />
-      </table>
-    </figure>
+    <div className="card" style={{ height: tableHeight + 24 }}>
+      <figure className="table--wrappper" style={dynamicHeight}>
+        <table ref={tableRef}>
+          <DataTableHead columns={columns} />
+          <DataTableBody {...props} />
+        </table>
+      </figure>
+    </div>
   );
 };

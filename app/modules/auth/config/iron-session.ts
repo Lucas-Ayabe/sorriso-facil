@@ -1,6 +1,8 @@
-export const ironSessionConfig = {
-  cookieName: "sorriso_facil_cookiename",
+import type { IronSessionOptions } from "iron-session";
+
+export const sessionOptions: IronSessionOptions = {
   password: process.env.IRON_SESSION_PASSWORD as string,
+  cookieName: "sorriso-facil/app",
   // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
@@ -10,7 +12,7 @@ export const ironSessionConfig = {
 declare module "iron-session" {
   interface IronSessionData {
     user?: {
-      id: number;
+      token: string;
       admin?: boolean;
     };
   }

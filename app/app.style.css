@@ -1,12 +1,14 @@
 :root {
   --shadow-strength: 2.5%;
   --primary-color: var(--teal-4);
+  --primary-light: var(--teal-3);
   --primary-dark: var(--teal-6);
   --color: var(--gray-8);
-  --contrast-color: var(--gray-2);
+  --contrast-color: var(--gray-1);
   --container-gap: 2rem;
+  --font-sans: Poppins, Helvetica, Arial, sans-serif;
 
-  background: #fff;
+  background: var(--contrast-color);
   font-family: var(--font-sans);
   font-size: var(--font-size-1);
 }
@@ -47,6 +49,7 @@
 
   font-family: inherit;
   font-size: inherit;
+  text-decoration: none;
   text-transform: uppercase;
 
   padding: var(--button-size) calc(var(--button-size) * 1.5);
@@ -86,8 +89,13 @@ table tr {
   border-bottom: var(--border-size-1) solid var(--gray-3);
 }
 
+tbody tr:last-child {
+  border-bottom: none;
+}
+
 table th {
   text-align: left;
+  white-space: nowrap;
 }
 
 table th,

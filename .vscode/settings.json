@@ -16,32 +16,32 @@
     "node_modules": true,
     ".editorconfig": true,
     ".eslintrc.json": true,
-    ".gitignore": true,
+    ".gitignore": false,
     "next-env.d.ts": true,
-    "next.config.js": true,
+    "next.config.js": false,
     "README.md": true,
     "yarn.lock": true,
     "yarn-error.log": true,
-    ".env": true,
-    ".env.local": true,
+    ".env": false,
+    ".env.local": false,
 
     // Application folders
     "public": true,
-    "config": true,
+    "config": false,
 
     // App
     "app/components": true,
-    "app/hooks": true,
+    "app/hooks": false,
     "app/routes": true,
     "app/types": true,
-    "app/app.slice.ts": true,
-    "app/app.style.css": true,
-    "app/store.ts": true,
+    "app/app.slice.ts": false,
+    "app/app.style.css": false,
+    "app/store.ts": false,
     "app/index.ts": true,
 
     // Modules
     "app/modules/animations": true,
-    "app/modules/auth": true,
+    "app/modules/auth": false,
     "app/modules/forms": true
   }
 }

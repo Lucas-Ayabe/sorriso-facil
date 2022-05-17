@@ -1,109 +1,74 @@
-import Head from "next/head";
-import { ReactElement } from "react";
-import { Dashboard } from "@modules/ui/components";
-import { columnFormatters as format, DataTable } from "@modules/data";
-import { useDataTable } from "@modules/data/hooks/use-data-table";
-import { CgList } from "react-icons/cg";
+import { ReactElement, useEffect, useState } from "react";
 
-const data = [
-  {
-    id: 1,
-    name: "Lucas",
-    age: 18,
-    birthdate: new Date("2002-04-12"),
-  },
-  {
-    id: 2,
-    name: "Lucas",
-    age: 18,
-    birthdate: new Date("2002-04-12"),
-  },
-  {
-    id: 3,
-    name: "Lucas",
-    age: 18,
-    birthdate: new Date("2002-04-12"),
-  },
-];
+import { useAppDispatch } from "@hooks";
+import { Dashboard, ListPage } from "@modules/ui";
+import { User, usersCleared, useUsersTable } from "@modules/users";
+import {
+  protectedAsAdminRoute,
+  AuthenticatedAsAdminPageProps,
+  sessionOptions,
+} from "@modules/auth";
+import { sorrisoFacilApi } from "@modules/http/config";
+import { withIronSessionSsr as withSession } from "iron-session/next";
 
-const Users = () => {
-  const table = useDataTable(
-    [
-      {
-        acessor: "id",
-        label: "ID",
-        format: format.string,
+export const getServerSideProps = withSession(async ({ req }) => {
+  const { session } = req;
+  const hasToken = !!session.user?.token;
+  const isAdmin = !!session.user?.admin;
+  const isLoggedAsAdmin = hasToken && isAdmin;
+
+  if (!isLoggedAsAdmin) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
       },
-      {
-        acessor: "name",
-        label: "Nome",
-        format: format.string,
-      },
-      {
-        acessor: "age",
-        label: "Idade",
-        format: format.number,
-      },
-      {
-        acessor: "birthdate",
-        label: "Data de nascimento",
-        format: format.date("pt-BR"),
-      },
-    ],
-    data,
-    [
-      {
-        id: "list",
-        icon: CgList,
-        text: "List",
-        onClick(item) {
-          alert(item.name);
+    };
+  }
+
+  const token = session.user?.token ?? "";
+  const users = await Promise.all([
+    sorrisoFacilApi
+      .get("/dentists", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      },
-      {
-        id: "list-01",
-        icon: CgList,
-        text: "List",
-        onClick(item) {
-          alert(item.name);
+      })
+      .then(({ data }) => data.content)
+      .catch(() => []),
+    sorrisoFacilApi
+      .get("/administrators", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      },
-      {
-        id: "list-02",
-        icon: CgList,
-        text: "List",
-        onClick(item) {
-          alert(item.name);
-        },
-      },
-      {
-        id: "list-03",
-        icon: CgList,
-        text: "List",
-        onClick(item) {
-          alert(item.name);
-        },
-      },
-    ]
+      })
+      .then(({ data }) => data.content)
+      .catch(() => []),
+  ]).then((entities) =>
+    entities.reduce((acc, current) => acc.concat(current), [])
   );
 
+  return {
+    props: {
+      user: req.session.user,
+      users,
+    },
+  };
+}, sessionOptions);
+type UsersProps = AuthenticatedAsAdminPageProps & { users: User[] };
+
+const Users = ({ users }: UsersProps) => {
+  const table = useUsersTable(users);
+
   return (
-    <>
-      <Head>
-        <title>Listar</title>
-        <meta
-          name="description"
-          content="Sistema de gerenciamento de clínicas odontológicas"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <div className="flow">
-        <h1>Usuários</h1>
-
-        <DataTable {...table} />
-      </div>
-    </>
+    <ListPage
+      title={{
+        singular: "usuário",
+        plural: "usuários",
+      }}
+      resource="users"
+      table={table}
+    />
   );
 };
 

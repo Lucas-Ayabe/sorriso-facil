@@ -3,6 +3,7 @@ import styles from "./field.module.css";
 
 export interface FieldProps {
   inputId?: string;
+  name?: string;
   children?: string;
   type?: string;
   value?: string;
@@ -11,6 +12,7 @@ export interface FieldProps {
 
 export const Field = ({
   inputId = "",
+  name = "",
   type = "text",
   children = "",
   value = "",
@@ -23,6 +25,7 @@ export const Field = ({
       </label>
       <input
         id={inputId}
+        name={name}
         className={styles.input}
         type={type}
         value={value}
