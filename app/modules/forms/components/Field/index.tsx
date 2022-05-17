@@ -5,6 +5,7 @@ export interface FieldProps {
   inputId?: string;
   name?: string;
   children?: string;
+  autoComplete?: string;
   type?: string;
   value?: string;
   onChange?: (value: string) => void;
@@ -13,6 +14,7 @@ export interface FieldProps {
 export const Field = ({
   inputId = "",
   name = "",
+  autoComplete = "",
   type = "text",
   children = "",
   value = "",
@@ -25,6 +27,7 @@ export const Field = ({
       </label>
       <input
         id={inputId}
+        autoComplete={autoComplete}
         name={name}
         className={styles.input}
         type={type}

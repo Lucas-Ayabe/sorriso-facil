@@ -1,13 +1,8 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement } from "react";
 
-import { useAppDispatch } from "@hooks";
 import { Dashboard, ListPage } from "@modules/ui";
-import { User, usersCleared, useUsersTable } from "@modules/users";
-import {
-  protectedAsAdminRoute,
-  AuthenticatedAsAdminPageProps,
-  sessionOptions,
-} from "@modules/auth";
+import { User, useUsersTable } from "@modules/users";
+import { AuthenticatedAsAdminPageProps, sessionOptions } from "@modules/auth";
 import { sorrisoFacilApi } from "@modules/http/config";
 import { withIronSessionSsr as withSession } from "iron-session/next";
 
@@ -55,6 +50,7 @@ export const getServerSideProps = withSession(async ({ req }) => {
     },
   };
 }, sessionOptions);
+
 type UsersProps = AuthenticatedAsAdminPageProps & { users: User[] };
 
 const Users = ({ users }: UsersProps) => {
@@ -72,5 +68,8 @@ const Users = ({ users }: UsersProps) => {
   );
 };
 
-Users.getLayout = (page: ReactElement) => <Dashboard>{page}</Dashboard>;
+Users.getLayout = (page: ReactElement, { user }: UsersProps) => {
+  return <Dashboard isAdmin={user.admin}>{page}</Dashboard>;
+};
+
 export default Users;

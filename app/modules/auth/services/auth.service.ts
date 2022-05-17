@@ -8,3 +8,8 @@ export const login = async (email: string, password: string) => {
     .then(({ data }) => data)
     .catch((): LoginResponse => ({ token: "", admin: false }));
 };
+
+export const logout = async () => {
+  localStorage.removeItem("@auth:token");
+  await apiRoutes.get("/logout");
+};

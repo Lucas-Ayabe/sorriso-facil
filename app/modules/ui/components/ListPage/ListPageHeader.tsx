@@ -12,7 +12,10 @@ const classes = {
   title: classNames(styles.listPageHeader__title),
 };
 
-export const ListPageHeader = ({ title, resource }: ListPageProps) => {
+export const ListPageHeader = <T extends {}>({
+  title,
+  resource,
+}: ListPageProps<T>) => {
   return (
     <header className={classes.wrapper}>
       <h1 className={classes.title}>

@@ -6,7 +6,7 @@ import Link from "next/link";
 import classNames from "classnames";
 
 import { routes as appRoutes } from "@/routes";
-import { useLoggedUser } from "@modules/auth";
+import { useLogout } from "@modules/auth";
 
 const baseClasses = {
   dashboard: {
@@ -24,10 +24,13 @@ const baseClasses = {
   },
 };
 
-export const Dashboard = ({ children }: PropsWithChildren<{}>) => {
-  const [loggedUser] = useLoggedUser();
-  const routes = loggedUser.admin ? appRoutes.admin : appRoutes.dentist;
+export const Dashboard = ({
+  children,
+  isAdmin,
+}: PropsWithChildren<{ isAdmin: boolean }>) => {
+  const logout = useLogout();
   const [open, setOpen] = useState(false);
+  const routes = isAdmin ? appRoutes.admin : appRoutes.dentist;
   const { dashboard, sidebar } = {
     ...baseClasses,
     sidebar: {
@@ -64,10 +67,10 @@ export const Dashboard = ({ children }: PropsWithChildren<{}>) => {
         </ul>
 
         <div className={sidebar.item}>
-          <a href="#" className={sidebar.link}>
+          <button onClick={logout} className={sidebar.link}>
             <CgEnter />
             <span>Sair</span>
-          </a>
+          </button>
         </div>
       </nav>
 
