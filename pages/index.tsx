@@ -1,6 +1,3 @@
-import { ReactElement } from "react";
-import { Dashboard } from "@modules/ui";
-
 export const getServerSideProps = async () => {
   return {
     redirect: {
@@ -11,8 +8,7 @@ export const getServerSideProps = async () => {
 };
 
 const Home = () => {
-  return <span>Carregando...</span>;
+  return <></>;
 };
 
-Home.getLayout = (page: ReactElement) => <Dashboard>{page}</Dashboard>;
 export default Home;
