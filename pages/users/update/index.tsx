@@ -9,6 +9,8 @@ export const getServerSideProps = async () => {
   };
 };
 
-export const Update = () => {
+const Update = () => {
   return <></>;
 };
+
+export default Update;
