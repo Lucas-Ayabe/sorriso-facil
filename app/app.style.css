@@ -69,7 +69,8 @@ svg {
   --button-size: 0.6em;
 }
 
-.card {
+.card,
+.card--lg {
   --card-space: 1em;
 
   padding: var(--card-space);
@@ -77,6 +78,10 @@ svg {
 
   background: #fff;
   box-shadow: var(--shadow-3);
+}
+
+.card--lg {
+  --card-space: 2em;
 }
 
 figure {

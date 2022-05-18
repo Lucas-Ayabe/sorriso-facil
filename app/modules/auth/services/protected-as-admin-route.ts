@@ -1,28 +1,35 @@
 import { withIronSessionSsr as withSession } from "iron-session/next";
+import { GetServerSideProps } from "next";
 import { sessionOptions } from "../config";
 
-export interface AuthenticatedAsAdminPageProps {
+export type AuthenticatedAsAdminPageProps<T = {}> = {
   user: { admin: boolean; token: string };
-}
+} & T;
 
-export const protectedAsAdminRoute = withSession(async ({ req }) => {
-  const { session } = req;
-  const hasToken = !!session.user?.token;
-  const isAdmin = !!session.user?.admin;
-  const isLoggedAsAdmin = hasToken && isAdmin;
+export const protectedAsAdminRoute = (handler: GetServerSideProps) => {
+  return withSession(async (ctx) => {
+    const { session } = ctx.req;
+    const hasToken = !!session.user?.token;
+    const isAdmin = !!session.user?.admin;
+    const isLoggedAsAdmin = hasToken && isAdmin;
 
-  if (!isLoggedAsAdmin) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+    if (!isLoggedAsAdmin) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
 
+    return handler(ctx);
+  }, sessionOptions);
+};
+
+export const defaultHandler = async (ctx: any) => {
   return {
     props: {
-      user: req.session.user,
+      user: ctx.req.session.user,
     },
   };
-}, sessionOptions);
+};

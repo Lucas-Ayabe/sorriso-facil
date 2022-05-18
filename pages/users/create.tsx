@@ -1,15 +1,23 @@
 import Head from "next/head";
 import { ReactElement } from "react";
-import { Dashboard } from "@modules/ui/components";
+import { Dashboard, FormPage } from "@modules/ui";
+
 import {
   protectedAsAdminRoute,
   AuthenticatedAsAdminPageProps,
+  defaultHandler,
 } from "@modules/auth";
+import { Field } from "@modules/forms";
+import { useCreateUser } from "@modules/users";
 
-export const getServerSideProps = protectedAsAdminRoute;
+export const getServerSideProps = protectedAsAdminRoute(defaultHandler);
 type CreateProps = AuthenticatedAsAdminPageProps;
 
-const Create = () => {
+const Create = ({ user }: CreateProps) => {
+  const { name, email, password, admin, onSubmit } = useCreateUser({
+    token: user.token,
+  });
+
   return (
     <>
       <Head>
@@ -21,9 +29,26 @@ const Create = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flow">
-        <h1>Criar Usuário</h1>
-      </div>
+      <FormPage title="Criar usuário" onSubmit={onSubmit}>
+        <Field inputId="create-user-name" {...name}>
+          Nome
+        </Field>
+        <Field inputId="create-user-email" {...email}>
+          E-mail
+        </Field>
+        <Field inputId="create-user-password" {...password}>
+          Senha
+        </Field>
+
+        <div>
+          <label htmlFor="admin">
+            <span style={{ marginRight: "1em" }}>É administrador</span>
+            <input {...admin} type="checkbox" name="admin" id="admin" />
+          </label>
+        </div>
+
+        <button className="button">Criar usuário</button>
+      </FormPage>
     </>
   );
 };

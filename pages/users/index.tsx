@@ -2,11 +2,13 @@ import { ReactElement } from "react";
 
 import { Dashboard, ListPage } from "@modules/ui";
 import { User, useUsersTable } from "@modules/users";
-import { AuthenticatedAsAdminPageProps, sessionOptions } from "@modules/auth";
 import { sorrisoFacilApi } from "@modules/http/config";
-import { withIronSessionSsr as withSession } from "iron-session/next";
+import {
+  protectedAsAdminRoute,
+  AuthenticatedAsAdminPageProps,
+} from "@modules/auth";
 
-export const getServerSideProps = withSession(async ({ req }) => {
+export const getServerSideProps = protectedAsAdminRoute(async ({ req }) => {
   const { session } = req;
   const hasToken = !!session.user?.token;
   const isAdmin = !!session.user?.admin;
@@ -24,24 +26,36 @@ export const getServerSideProps = withSession(async ({ req }) => {
   const token = session.user?.token ?? "";
   const users = await Promise.all([
     sorrisoFacilApi
-      .get("/dentists", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(({ data }) => data.content)
-      .catch(() => []),
-    sorrisoFacilApi
       .get("/administrators", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(({ data }) => data.content)
+      .then(({ data }) =>
+        data.content.map((admin: any) => ({
+          ...admin,
+          id: `admin-${admin.id}`,
+          isAdmin: true,
+        }))
+      )
       .catch(() => []),
-  ]).then((entities) =>
-    entities.reduce((acc, current) => acc.concat(current), [])
-  );
+    sorrisoFacilApi
+      .get("/dentists", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(({ data }) =>
+        data.content.map((dentist: any) => ({
+          ...dentist,
+          id: `dentist-${dentist.id}`,
+          isAdmin: false,
+        }))
+      )
+      .catch(() => []),
+  ]).then((entities) => {
+    return entities.reduce((acc, current) => acc.concat(current), []);
+  });
 
   return {
     props: {
@@ -49,12 +63,13 @@ export const getServerSideProps = withSession(async ({ req }) => {
       users,
     },
   };
-}, sessionOptions);
+});
 
-type UsersProps = AuthenticatedAsAdminPageProps & { users: User[] };
+type UsersProps = AuthenticatedAsAdminPageProps<{ users: User[] }>;
 
 const Users = ({ users }: UsersProps) => {
   const table = useUsersTable(users);
+  console.log(users);
 
   return (
     <ListPage
