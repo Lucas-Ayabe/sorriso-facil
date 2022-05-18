@@ -41,7 +41,7 @@
 
     // Modules
     "app/modules/animations": true,
-    "app/modules/auth": false,
+    "app/modules/auth": true,
     "app/modules/forms": true
   }
 }

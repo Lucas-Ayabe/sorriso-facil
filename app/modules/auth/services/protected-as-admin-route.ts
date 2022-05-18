@@ -6,7 +6,7 @@ export type AuthenticatedAsAdminPageProps<T = {}> = {
   user: { admin: boolean; token: string };
 } & T;
 
-export const protectedAsAdminRoute = (handler: GetServerSideProps) => {
+export const adminRoute = (handler: GetServerSideProps) => {
   return withSession(async (ctx) => {
     const { session } = ctx.req;
     const hasToken = !!session.user?.token;
@@ -14,6 +14,26 @@ export const protectedAsAdminRoute = (handler: GetServerSideProps) => {
     const isLoggedAsAdmin = hasToken && isAdmin;
 
     if (!isLoggedAsAdmin) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
+
+    return handler(ctx);
+  }, sessionOptions);
+};
+
+export const dentistRoute = (handler: GetServerSideProps) => {
+  return withSession(async (ctx) => {
+    const { session } = ctx.req;
+    const hasToken = !!session.user?.token;
+    const isAdmin = !!session.user?.admin;
+    const isLoggedAsDentist = hasToken && !isAdmin;
+
+    if (!isLoggedAsDentist) {
       return {
         redirect: {
           destination: "/login",

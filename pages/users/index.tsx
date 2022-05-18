@@ -3,12 +3,9 @@ import { ReactElement } from "react";
 import { Dashboard, ListPage } from "@modules/ui";
 import { User, useUsersTable } from "@modules/users";
 import { sorrisoFacilApi } from "@modules/http/config";
-import {
-  protectedAsAdminRoute,
-  AuthenticatedAsAdminPageProps,
-} from "@modules/auth";
+import { adminRoute, AuthenticatedAsAdminPageProps } from "@modules/auth";
 
-export const getServerSideProps = protectedAsAdminRoute(async ({ req }) => {
+export const getServerSideProps = adminRoute(async ({ req }) => {
   const { session } = req;
   const hasToken = !!session.user?.token;
   const isAdmin = !!session.user?.admin;
