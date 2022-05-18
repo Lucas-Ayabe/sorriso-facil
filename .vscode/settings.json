@@ -45,7 +45,7 @@
     "app/modules/forms": true,
     "app/modules/data": true,
     "app/modules/http": true,
-    "app/modules/services": true,
-    "app/modules/ui": true
+    "app/modules/services": false,
+    "app/modules/ui": false
   }
 }

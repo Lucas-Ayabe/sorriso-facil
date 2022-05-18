@@ -2,7 +2,7 @@ import { withIronSessionSsr as withSession } from "iron-session/next";
 import { GetServerSideProps } from "next";
 import { sessionOptions } from "../config";
 
-export type AuthenticatedAsAdminPageProps<T = {}> = {
+export type AuthenticatedPageProps<T = {}> = {
   user: { admin: boolean; token: string };
 } & T;
 

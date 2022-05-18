@@ -1,31 +1,34 @@
 import { useTextField } from "@modules/forms";
 import { useRouter } from "next/router";
-import { useBoolean } from "usehooks-ts";
-import { createByRole } from "../services";
+import { updateByRole, UserRole } from "../services";
 
-export interface UseCreateUserProps {
+export interface UseUpdateUserProps {
   name?: string;
   email?: string;
   password?: string;
   token: string;
+  role: UserRole;
+  id: number;
 }
 
-export const useCreateUser = ({
+export const useUpdateUser = ({
   name = "",
   email = "",
   password = "",
+  role,
   token,
-}: UseCreateUserProps) => {
+  id,
+}: UseUpdateUserProps) => {
   const router = useRouter();
   const nameField = useTextField(name);
   const emailField = useTextField(email);
   const passwordField = useTextField(password);
-  const { toggle, value } = useBoolean();
 
   const onSubmit = async () => {
-    await createByRole(
-      value ? "administrator" : "dentist",
+    await updateByRole(
+      role,
       {
+        id,
         name: nameField.value,
         email: emailField.value,
         password: passwordField.value,
@@ -40,7 +43,6 @@ export const useCreateUser = ({
     name: nameField,
     email: { ...emailField, type: "email" },
     password: { ...passwordField, type: "password" },
-    admin: { checked: value, onChange: toggle },
     onSubmit,
   };
 };

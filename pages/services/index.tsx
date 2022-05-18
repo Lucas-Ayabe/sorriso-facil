@@ -4,14 +4,14 @@ import { Dashboard, ListPage } from "@modules/ui";
 import { sorrisoFacilApi } from "@modules/http/config";
 import {
   dentistRoute,
-  AuthenticatedAsAdminPageProps,
+  AuthenticatedPageProps,
   defaultHandler,
 } from "@modules/auth";
 import { useServicesTable } from "@modules/services";
 
 export const getServerSideProps = dentistRoute(defaultHandler);
 
-type ServicesProps = AuthenticatedAsAdminPageProps;
+type ServicesProps = AuthenticatedPageProps;
 
 const Services = () => {
   const table = useServicesTable([]);

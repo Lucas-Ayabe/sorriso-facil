@@ -4,6 +4,12 @@ import { Column } from "@modules/data/types";
 import { useRouter } from "next/router";
 import { CgPen, CgTrash } from "react-icons/cg";
 import { User } from "../user.slice";
+import * as UserService from "../services/user.service";
+
+const numberId = (id: string | number) => {
+  const [, userId] = id.toString().split("-");
+  return +userId;
+};
 
 const columns: Column<keyof User>[] = [
   {
@@ -23,7 +29,7 @@ const columns: Column<keyof User>[] = [
   },
 ];
 
-export const useUsersTable = (data: User[]) => {
+export const useUsersTable = (data: User[], token: string) => {
   const router = useRouter();
   const actions: Action<User>[] = [
     {
@@ -32,13 +38,26 @@ export const useUsersTable = (data: User[]) => {
       text: "Atualizar usuário",
       onClick: (user) => {
         const resource = user.isAdmin ? "admin" : "dentist";
-        router.push(`/users/update/${resource}/${user.id}`);
+        const id = numberId(user.id);
+        router.push(`/users/update/${resource}/${id}`);
       },
     },
     {
       id: "delete-user",
       icon: CgTrash,
       text: "Excluir usuário",
+      onClick: async (user) => {
+        const id = numberId(user.id);
+        const confirmDelete = confirm("Realmente deseja exclir este usuários?");
+        if (confirmDelete) {
+          await UserService.deleteByRole(
+            user.isAdmin ? "administrator" : "dentist",
+            id,
+            token
+          ).catch(console.log);
+          router.reload();
+        }
+      },
     },
   ];
 

@@ -4,14 +4,14 @@ import { Dashboard, FormPage } from "@modules/ui";
 
 import {
   adminRoute,
-  AuthenticatedAsAdminPageProps,
+  AuthenticatedPageProps,
   defaultHandler,
 } from "@modules/auth";
 import { Field } from "@modules/forms";
 import { useCreateUser } from "@modules/users";
 
 export const getServerSideProps = adminRoute(defaultHandler);
-type CreateProps = AuthenticatedAsAdminPageProps;
+type CreateProps = AuthenticatedPageProps;
 
 const Create = ({ user }: CreateProps) => {
   const { name, email, password, admin, onSubmit } = useCreateUser({

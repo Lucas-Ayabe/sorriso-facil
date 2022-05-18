@@ -2,18 +2,59 @@ import Head from "next/head";
 import { ReactElement } from "react";
 import { Dashboard, FormPage } from "@modules/ui";
 
-import {
-  adminRoute,
-  AuthenticatedAsAdminPageProps,
-  defaultHandler,
-} from "@modules/auth";
+import { adminRoute, AuthenticatedPageProps } from "@modules/auth";
 import { Field } from "@modules/forms";
+import * as UserService from "@modules/users/services/user.service";
+import { User, useUpdateUser } from "@modules/users";
 
-export const getServerSideProps = adminRoute(defaultHandler);
+type ErrorReturn = {
+  redirect: {
+    destination: string;
+    permanent: boolean;
+  };
+};
 
-type UpdateProps = AuthenticatedAsAdminPageProps;
+type SuccessReturn = {
+  props: {
+    user: { token: string; admin: boolean };
+    formUser: User & { id: number };
+  };
+};
 
-const Update = () => {
+export const getServerSideProps = adminRoute(async ({ req, params }) => {
+  const id = +(params?.id as string) ?? 0;
+  return UserService.findByRole(
+    "administrator",
+    id,
+    req.session.user?.token ?? ""
+  ).caseOf<SuccessReturn | ErrorReturn>({
+    Just: (user) => {
+      return {
+        props: {
+          user: req.session.user,
+          formUser: { ...user, id },
+        },
+      } as SuccessReturn;
+    },
+    Nothing: () => {
+      return {
+        redirect: {
+          destination: "/users",
+          permanent: false,
+        },
+      };
+    },
+  });
+});
+
+type UpdateProps = AuthenticatedPageProps<{ formUser: User }>;
+
+const Update = ({ formUser, user }: UpdateProps) => {
+  const { name, email, password, onSubmit } = useUpdateUser({
+    role: "administrator",
+    token: user.token,
+    ...formUser,
+  });
   return (
     <>
       <Head>
@@ -25,10 +66,10 @@ const Update = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <FormPage title="Atualizar usuário">
-        <Field>Nome</Field>
-        <Field>E-mail</Field>
-        <Field>Senha</Field>
+      <FormPage title="Atualizar usuário" onSubmit={onSubmit}>
+        <Field {...name}>Nome</Field>
+        <Field {...email}>E-mail</Field>
+        <Field {...password}>Senha</Field>
 
         <button className="button">Atualizar usuário</button>
       </FormPage>
