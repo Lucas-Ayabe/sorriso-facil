@@ -3,13 +3,13 @@ import { ReactElement } from "react";
 import { Dashboard, ListPage } from "@modules/ui";
 import { sorrisoFacilApi } from "@modules/http/config";
 import {
-  dentistRoute,
+  withDentistRoute,
   AuthenticatedPageProps,
   defaultHandler,
 } from "@modules/auth";
 import { useServicesTable } from "@modules/services";
 
-export const getServerSideProps = dentistRoute(defaultHandler);
+export const getServerSideProps = withDentistRoute(defaultHandler);
 
 type ServicesProps = AuthenticatedPageProps;
 

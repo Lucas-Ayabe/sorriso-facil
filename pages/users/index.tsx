@@ -2,10 +2,10 @@ import { ReactElement } from "react";
 
 import { Dashboard, ListPage } from "@modules/ui";
 import { User, useUsersTable } from "@modules/users";
-import { adminRoute, AuthenticatedPageProps } from "@modules/auth";
+import { withAdminRoute, AuthenticatedPageProps } from "@modules/auth";
 import * as UserService from "@modules/users/services/user.service";
 
-export const getServerSideProps = adminRoute(async ({ req }) => {
+export const getServerSideProps = withAdminRoute(async ({ req }) => {
   const { user = { token: "", admin: false } } = req.session;
 
   return {

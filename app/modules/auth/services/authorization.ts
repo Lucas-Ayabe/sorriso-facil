@@ -6,7 +6,7 @@ export type AuthenticatedPageProps<T = {}> = {
   user: { admin: boolean; token: string };
 } & T;
 
-export const adminRoute = (handler: GetServerSideProps) => {
+export const withAdminRoute = (handler: GetServerSideProps) => {
   return withSession(async (ctx) => {
     const { session } = ctx.req;
     const hasToken = !!session.user?.token;
@@ -26,7 +26,7 @@ export const adminRoute = (handler: GetServerSideProps) => {
   }, sessionOptions);
 };
 
-export const dentistRoute = (handler: GetServerSideProps) => {
+export const withDentistRoute = (handler: GetServerSideProps) => {
   return withSession(async (ctx) => {
     const { session } = ctx.req;
     const hasToken = !!session.user?.token;

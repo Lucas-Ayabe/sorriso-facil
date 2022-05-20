@@ -5,11 +5,11 @@ import { Dashboard, FormPage } from "@modules/ui";
 import {
   AuthenticatedPageProps,
   defaultHandler,
-  dentistRoute,
+  withDentistRoute,
 } from "@modules/auth";
 import { Field } from "@modules/forms";
 
-export const getServerSideProps = dentistRoute(defaultHandler);
+export const getServerSideProps = withDentistRoute(defaultHandler);
 type CreateProps = AuthenticatedPageProps;
 
 const Create = ({ user }: CreateProps) => {

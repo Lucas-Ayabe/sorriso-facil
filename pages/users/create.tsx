@@ -3,14 +3,14 @@ import { ReactElement } from "react";
 import { Dashboard, FormPage } from "@modules/ui";
 
 import {
-  adminRoute,
+  withAdminRoute,
   AuthenticatedPageProps,
   defaultHandler,
 } from "@modules/auth";
 import { Field } from "@modules/forms";
 import { useCreateUser } from "@modules/users";
 
-export const getServerSideProps = adminRoute(defaultHandler);
+export const getServerSideProps = withAdminRoute(defaultHandler);
 type CreateProps = AuthenticatedPageProps;
 
 const Create = ({ user }: CreateProps) => {
