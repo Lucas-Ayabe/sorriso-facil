@@ -114,8 +114,30 @@ table td {
   padding-top: var(--size-3);
 }
 
+fieldset {
+  border: none;
+}
+
+legend {
+  display: block;
+  width: 100%;
+  position: relative;
+  top: 0.5em;
+
+  border-bottom: 1px solid rgb(0, 0, 0, 0.12);
+  font-size: var(--font-size-3);
+  font-weight: 500;
+
+  padding-bottom: 0.5em;
+}
+
+.separator,
 .divider + .divider {
   border-top: 1px solid rgb(0, 0, 0, 0.12);
+}
+
+.separator {
+  margin-block: 1.5em;
 }
 
 .fade-in-transition {

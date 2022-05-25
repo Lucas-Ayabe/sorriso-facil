@@ -1,4 +1,4 @@
-import { useTextField } from "@modules/forms";
+import { useField } from "@modules/forms";
 import { useRouter } from "next/router";
 import { LoginFormProps } from "../components";
 import { login } from "../services";
@@ -9,8 +9,8 @@ export const useLoginForm = (
 ): LoginFormProps => {
   const router = useRouter();
   const [, setLoggedUser] = useLoggedUser();
-  const emailProps = useTextField("");
-  const passwordProps = useTextField("");
+  const emailProps = useField("");
+  const passwordProps = useField("");
 
   const onLogin = async (email: string, password: string) => {
     const { token, admin } = await login(email, password);

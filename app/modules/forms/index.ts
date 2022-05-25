@@ -1,2 +1,2 @@
-export * from "./components/Field";
+export * from "./components";
 export * from "./hooks";

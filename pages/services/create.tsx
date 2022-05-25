@@ -4,15 +4,18 @@ import { Dashboard, FormPage } from "@modules/ui";
 
 import {
   AuthenticatedPageProps,
-  defaultHandler,
+  getLoggedUser,
   withDentistRoute,
 } from "@modules/auth";
-import { Field } from "@modules/forms";
+import { Field, NumberField } from "@modules/forms";
+import { useCreateService } from "@modules/services";
 
-export const getServerSideProps = withDentistRoute(defaultHandler);
+export const getServerSideProps = withDentistRoute(getLoggedUser);
 type CreateProps = AuthenticatedPageProps;
 
 const Create = ({ user }: CreateProps) => {
+  const { name, price, onSubmit } = useCreateService(user.token);
+
   return (
     <>
       <Head>
@@ -24,10 +27,13 @@ const Create = ({ user }: CreateProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <FormPage title="Criar serviço">
-        <Field inputId="create-service-name">Nome</Field>
-        <Field inputId="create-service-price">Preço</Field>
-
+      <FormPage title="Criar serviço" onSubmit={onSubmit}>
+        <Field {...name} inputId="create-service-name">
+          Nome
+        </Field>
+        <NumberField {...price} inputId="create-service-price">
+          Preço
+        </NumberField>
         <button className="button">Criar serviço</button>
       </FormPage>
     </>

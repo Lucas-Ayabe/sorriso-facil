@@ -1,4 +1,4 @@
-import { sorrisoFacilApi } from "@modules/http/config";
+import { sorrisoFacilApi, auth } from "@modules/http";
 import { MaybeAsync } from "purify-ts";
 import { User } from "../user.slice";
 
@@ -8,8 +8,6 @@ export interface UserDto {
   email: string;
   password: string;
 }
-
-const auth = (token: string) => ({ Authorization: `Bearer ${token}` });
 
 export const findAllByRole = async (
   role: UserRole,

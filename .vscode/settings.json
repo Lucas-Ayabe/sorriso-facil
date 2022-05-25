@@ -32,18 +32,18 @@
     // App
     "app/components": true,
     "app/hooks": true,
-    "app/routes": true,
+    "app/routes": false,
     "app/types": true,
-    "app/app.slice.ts": true,
+    "app/app.slice.ts": false,
     "app/app.style.css": false,
-    "app/store.ts": true,
+    "app/store.ts": false,
     "app/index.ts": true,
 
     // Modules
     "app/modules/animations": true,
     "app/modules/auth": true,
-    "app/modules/forms": true,
-    "app/modules/data": true,
+    "app/modules/forms": false,
+    "app/modules/data": false,
     "app/modules/http": false,
     "app/modules/services": false,
     "app/modules/ui": false

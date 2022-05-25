@@ -7,6 +7,7 @@ import {
 import { useRouter } from "next/router";
 import { CgPen, CgTrash } from "react-icons/cg";
 import { Service } from "../service.slice";
+import { deleteById } from "../services";
 
 const columns: Column<keyof Service>[] = [
   {
@@ -26,17 +27,29 @@ const columns: Column<keyof Service>[] = [
   },
 ];
 
-export const useServicesTable = (data: Service[]) => {
+export const useServicesTable = (token: string, data: Service[]) => {
+  const router = useRouter();
   const actions: Action<Service>[] = [
     {
       id: "update-service",
       icon: CgPen,
       text: "Atualizar serviço",
+      onClick(item) {
+        router.push(`/services/update/${item.id}`);
+      },
     },
     {
       id: "delete-service",
       icon: CgTrash,
       text: "Excluir serviço",
+      onClick(service) {
+        const confirmDelete = window.confirm("Realmente deseja excluir?");
+
+        if (confirmDelete) {
+          deleteById(token, service.id);
+          router.reload();
+        }
+      },
     },
   ];
 

@@ -23,7 +23,7 @@ const initialState: UserState = {
 };
 
 export const userSlice = createSlice({
-  name: "app",
+  name: "user",
   initialState,
   reducers: {
     userAdded: (state, action: PayloadAction<User>) => {

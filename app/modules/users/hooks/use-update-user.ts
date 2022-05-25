@@ -1,4 +1,4 @@
-import { useTextField } from "@modules/forms";
+import { useField } from "@modules/forms";
 import { useRouter } from "next/router";
 import { updateByRole, UserRole } from "../services";
 
@@ -20,9 +20,9 @@ export const useUpdateUser = ({
   id,
 }: UseUpdateUserProps) => {
   const router = useRouter();
-  const nameField = useTextField(name);
-  const emailField = useTextField(email);
-  const passwordField = useTextField(password);
+  const nameField = useField(name);
+  const emailField = useField(email);
+  const passwordField = useField(password);
 
   const onSubmit = async () => {
     await updateByRole(

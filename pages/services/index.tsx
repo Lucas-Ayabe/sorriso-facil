@@ -1,20 +1,24 @@
 import { ReactElement } from "react";
 
 import { Dashboard, ListPage } from "@modules/ui";
-import { sorrisoFacilApi } from "@modules/http/config";
-import {
-  withDentistRoute,
-  AuthenticatedPageProps,
-  defaultHandler,
-} from "@modules/auth";
-import { useServicesTable } from "@modules/services";
+import { withDentistRoute, AuthenticatedPageProps } from "@modules/auth";
+import { useServicesTable, findAll, Service } from "@modules/services";
 
-export const getServerSideProps = withDentistRoute(defaultHandler);
+export const getServerSideProps = withDentistRoute(async (ctx) => {
+  return {
+    props: {
+      user: ctx.req.session.user,
+      services: await findAll(ctx.req.session.user?.token ?? ""),
+    },
+  };
+});
 
-type ServicesProps = AuthenticatedPageProps;
+type ServicesProps = AuthenticatedPageProps & {
+  services: Service[];
+};
 
-const Services = () => {
-  const table = useServicesTable([]);
+const Services = ({ user, services }: ServicesProps) => {
+  const table = useServicesTable(user.token, services);
 
   return (
     <ListPage

@@ -46,7 +46,7 @@ export const withDentistRoute = (handler: GetServerSideProps) => {
   }, sessionOptions);
 };
 
-export const defaultHandler = async (ctx: any) => {
+export const getLoggedUser = async (ctx: any) => {
   return {
     props: {
       user: ctx.req.session.user,

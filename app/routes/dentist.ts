@@ -2,17 +2,17 @@ import { CgBriefcase, CgCalendar, CgUser } from "react-icons/cg";
 
 export const dentistRoutes = [
   {
-    route: "/",
+    route: "/schedule",
     text: "Agenda",
     icon: CgCalendar,
   },
   {
-    route: "/",
+    route: "/services",
     text: "Serviços",
     icon: CgBriefcase,
   },
   {
-    route: "/",
+    route: "/clients",
     text: "Clientes",
     icon: CgUser,
   },

@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./field.module.css";
+import styles from "../field.module.css";
 
 export interface FieldProps {
   inputId?: string;
@@ -11,29 +11,36 @@ export interface FieldProps {
   onChange?: (value: string) => void;
 }
 
-export const Field = ({
-  inputId = "",
-  name = "",
-  autoComplete = "",
-  type = "text",
-  children = "",
-  value = "",
-  onChange = () => null,
-}: FieldProps) => {
-  return (
-    <div className={styles.field}>
-      <label className={styles.label} htmlFor={inputId}>
-        {children}
-      </label>
-      <input
-        id={inputId}
-        autoComplete={autoComplete}
-        name={name}
-        className={styles.input}
-        type={type}
-        value={value}
-        onChange={({ target }) => onChange(target.value)}
-      />
-    </div>
-  );
-};
+export const Field = React.forwardRef<any, FieldProps>(
+  (props: FieldProps, ref) => {
+    const {
+      inputId = "",
+      name = "",
+      autoComplete = "",
+      type = "text",
+      children = "",
+      value = "",
+      onChange = () => null,
+    } = props;
+
+    return (
+      <div className={styles.field}>
+        <label className={styles.label} htmlFor={inputId}>
+          {children}
+        </label>
+        <input
+          ref={ref}
+          id={inputId}
+          autoComplete={autoComplete}
+          name={name}
+          className={styles.input}
+          type={type}
+          value={value}
+          onChange={({ target }) => onChange(target.value)}
+        />
+      </div>
+    );
+  }
+);
+
+Field.displayName = "Field";

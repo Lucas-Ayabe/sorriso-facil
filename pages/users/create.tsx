@@ -5,12 +5,12 @@ import { Dashboard, FormPage } from "@modules/ui";
 import {
   withAdminRoute,
   AuthenticatedPageProps,
-  defaultHandler,
+  getLoggedUser,
 } from "@modules/auth";
 import { Field } from "@modules/forms";
 import { useCreateUser } from "@modules/users";
 
-export const getServerSideProps = withAdminRoute(defaultHandler);
+export const getServerSideProps = withAdminRoute(getLoggedUser);
 type CreateProps = AuthenticatedPageProps;
 
 const Create = ({ user }: CreateProps) => {
