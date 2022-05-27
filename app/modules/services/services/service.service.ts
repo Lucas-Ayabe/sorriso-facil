@@ -6,7 +6,7 @@ export interface ServiceDto {
   price: number;
 }
 
-const serviceRepository = (token: string) => {
+export const serviceRepository = (token: string) => {
   return new CrudService<Service, ServiceDto>({
     token,
     resource: {

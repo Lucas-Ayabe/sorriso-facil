@@ -7,8 +7,14 @@ import {
   getLoggedUser,
   withDentistRoute,
 } from "@modules/auth";
-import { Field, NaturalNumberField, SelectField } from "@modules/forms";
+import {
+  Field,
+  MultiField,
+  NaturalNumberField,
+  SelectField,
+} from "@modules/forms";
 import { useCreateClient } from "@modules/clients";
+import { MaskedField } from "@modules/forms/components/MaskedField";
 
 export const getServerSideProps = withDentistRoute(getLoggedUser);
 type CreateProps = AuthenticatedPageProps;
@@ -23,6 +29,7 @@ const Create = ({ user }: CreateProps) => {
     city,
     state,
     cep,
+    telephones,
     onSubmit,
   } = useCreateClient(user.token);
 
@@ -52,56 +59,37 @@ const Create = ({ user }: CreateProps) => {
         <Field {...city} inputId="create-client-city">
           Cidade
         </Field>
-        <SelectField
-          inputId="create-client-state"
-          options={[
-            { label: "Escolha um estado", value: "", disabled: true },
-            { label: "São Paulo", value: "SP" },
-            { label: "Rio de Janeiro", value: "RJ" },
-          ]}
-          {...state}
-        >
+        <SelectField {...state} inputId="create-client-state">
           Estado
         </SelectField>
-        <Field {...cep} inputId="create-client-cep">
+        <MaskedField {...cep} inputId="create-client-cep">
           CEP
-        </Field>
+        </MaskedField>
       </fieldset>
 
       <fieldset className="flow">
-        <legend>Números de Telefone</legend>
+        <legend
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          Números de Telefone{" "}
+          <button
+            type="button"
+            onClick={() => telephones.addField()}
+            className="button--small"
+          >
+            +
+          </button>
+        </legend>
 
-        {/**
-         * Criar componente <MultiField />. Ex:
-         *   <MultiField
-         *     values={string[]}
-         *     onAddField={(value: string) => void}
-         *     label={(value: string, index: number) => string}
-         *     keyExtractor={(value: string, index: number) => string}
-         *     onChange={(value: string, index: number) => void}
-         *   />
-         *
-         * =================================================
-         *
-         * Design base:
-         *    {values.map((value, index) => {
-         *       const isLast = index === values.length - 1;
-         *       return (
-         *         <div key={keyExtractor(value, index)}>
-         *           <label>{label(value, index)}</label>
-         *           <div>
-         *              <input value={value} onChange={onChange} />
-         *              {isLast && (
-         *                <button onClick={() => onAddField(value, index)}>
-         *                +
-         *                </button>
-         *              )}
-         *           </div>
-         *         </div>
-         *       )
-         *    }}
-         */}
-        <Field inputId="create-service-telphone-1" />
+        <MultiField
+          label={(_, index) => `Telefone n°${index + 1}`}
+          keyExtractor={(_, index) => `create-client-telephone-${index + 1}`}
+          {...telephones}
+        />
       </fieldset>
 
       <button className="button">Cadastrar cliente</button>

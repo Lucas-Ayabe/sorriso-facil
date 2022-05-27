@@ -8,6 +8,14 @@
   margin-bottom: 0.25em;
 }
 
+.inputWrapper {
+  display: flex;
+}
+
+.inputWrapper .input {
+  flex: 1;
+}
+
 .input {
   --input-background: #fff;
   --input-color: #000;

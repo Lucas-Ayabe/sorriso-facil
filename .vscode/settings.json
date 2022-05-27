@@ -37,7 +37,7 @@
     "app/app.slice.ts": false,
     "app/app.style.css": false,
     "app/store.ts": false,
-    "app/index.ts": true,
+    "app/index.ts": false,
 
     // Modules
     "app/modules/animations": true,

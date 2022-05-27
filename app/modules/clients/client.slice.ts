@@ -29,8 +29,6 @@ export interface Client {
   age: number;
 }
 
-type WithoutId<T> = Omit<T, "id">;
-
 export type CompleteClient = Client & {
   address: Address;
   telephones: Telephone[];

@@ -44,11 +44,7 @@ export const useAddressForm = (props = defaultProps) => {
   const numberField = useField<number | "">(number);
   const cityField = useField(city);
   const stateField = useSelectField(options, state);
-  const cepField = useIMask({ mask: "00000-000" });
-
-  useEffect(() => {
-    cepField.setValue(cep);
-  }, [cep, cepField]);
+  const cepField = useField(cep);
 
   return {
     street: streetField,
@@ -56,10 +52,6 @@ export const useAddressForm = (props = defaultProps) => {
     number: numberField,
     city: cityField,
     state: stateField,
-    cep: {
-      ref: cepField.ref,
-      value: cepField.value,
-      onChange: cepField.setValue,
-    },
+    cep: { ...cepField, mask: "00000-000" },
   };
 };

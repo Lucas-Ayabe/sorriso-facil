@@ -8,6 +8,7 @@ import {
   Client,
   CompleteClient,
 } from "@modules/clients";
+import { useAppSelector } from "@hooks";
 
 export const getServerSideProps = withDentistRoute(async (ctx) => {
   return {
@@ -23,7 +24,11 @@ type ClientsProps = AuthenticatedPageProps & {
 };
 
 const Clients = ({ user, clients }: ClientsProps) => {
-  const table = useClientsTable(user.token, clients as CompleteClient[]);
+  const { client } = useAppSelector((state) => state.client.modal);
+  const [table, dialogRef] = useClientsTable(
+    user.token,
+    clients as CompleteClient[]
+  );
 
   return (
     <>
@@ -37,24 +42,32 @@ const Clients = ({ user, clients }: ClientsProps) => {
       />
       <br />
       <br />
-      <dialog className="card flow">
+      <dialog ref={dialogRef} className="card flow">
         <div>
-          <h3>Foo</h3>
-          <p>20 anos</p>
+          <h3>{client.name}</h3>
+          <p>{client.age} anos</p>
         </div>
         <address>
-          Cabo Frio - Doze, Bela Vista, Subsolo 2, 6757, RJ, 28876-519
+          {client.address.street}, {client.address.neighborhood},{" "}
+          {client.address.number}, {client.address.city}, {client.address.state}
+          , {client.address.cep}
         </address>
 
         <h4>Telefones</h4>
         <ul style={{ listStylePosition: "inside" }}>
-          <li>(99) 9999-9999</li>
-          <li>(99) 9999-9999</li>
-          <li>(99) 9999-9999</li>
-          <li>(99) 9999-9999</li>
-          <li>(99) 9999-9999</li>
-          <li>(99) 9999-9999</li>
+          {client.telephones.map((telephone) => (
+            <li key={telephone.id}>
+              ({telephone.ddd}) {telephone.number}
+            </li>
+          ))}
         </ul>
+
+        <button
+          className="button--small"
+          onClick={() => dialogRef.current.close()}
+        >
+          Fechar
+        </button>
       </dialog>
     </>
   );

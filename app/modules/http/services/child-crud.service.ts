@@ -3,25 +3,36 @@ import { MaybeAsync } from "purify-ts";
 import { sorrisoFacilApi } from "../config";
 import { auth } from "../helpers";
 
-export interface CrudServiceConfig {
+export interface ChildCrudServiceConfig {
   token: string;
   resource: {
     singular: string;
     plural: string;
   };
+  parentResource: {
+    id: number;
+    singular: string;
+    plural: string;
+  };
 }
 
-export class CrudService<Entity, Dto> {
+export class ChildCrudService<Entity, Dto> {
   private readonly httpClient: AxiosInstance;
   private readonly token: string;
   private readonly resource: {
     singular: string;
     plural: string;
   };
+  private readonly parentResource: {
+    id: number;
+    singular: string;
+    plural: string;
+  };
 
-  constructor({ token, resource }: CrudServiceConfig) {
+  constructor({ token, resource, parentResource }: ChildCrudServiceConfig) {
     this.token = token;
     this.resource = resource;
+    this.parentResource = parentResource;
     this.httpClient = sorrisoFacilApi;
 
     this.findAll = this.findAll.bind(this);
@@ -29,21 +40,41 @@ export class CrudService<Entity, Dto> {
     this.create = this.create.bind(this);
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
+    this.singularEndpoint = this.singularEndpoint.bind(this);
   }
 
   private get auth() {
     return { headers: auth(this.token) };
   }
 
+  private get parentBase() {
+    const { singular, id } = this.parentResource;
+    return `/${singular}/${id}`;
+  }
+
+  private get singularGeralEndpoint() {
+    const { singular } = this.resource;
+    return `${this.parentBase}/${singular}`;
+  }
+
+  private get pluralGeralEndpoint() {
+    const { plural } = this.resource;
+    return `${this.parentBase}/${plural}`;
+  }
+
+  private singularEndpoint(resourceId: number) {
+    return `${this.singularGeralEndpoint}/${resourceId}`;
+  }
+
   async findAll(): Promise<Entity[]> {
-    const endpoint = `/${this.resource.plural}`;
+    const endpoint = this.pluralGeralEndpoint;
     const response = await this.httpClient.get(endpoint, this.auth);
 
     return response.data.content;
   }
 
   findById(id: number) {
-    const endpoint = `/${this.resource.singular}/${id}`;
+    const endpoint = this.singularEndpoint(id);
 
     return MaybeAsync<Entity>(async () => {
       const { data } = await this.httpClient.get(endpoint, this.auth);
@@ -53,23 +84,22 @@ export class CrudService<Entity, Dto> {
 
   create(resource: Dto) {
     return MaybeAsync<Entity>(async () => {
-      const { createdResource } = await this.httpClient
-        .post(`/${this.resource.singular}`, resource, this.auth)
-        .then(({ data }) => ({ createdResource: data as Entity }));
-      return createdResource;
+      return this.httpClient
+        .post(this.singularGeralEndpoint, resource, this.auth)
+        .then(({ data }) => data);
     });
   }
 
   async update(id: number, resource: Dto) {
     return this.httpClient
-      .put(`/${this.resource.singular}/${id}`, resource, this.auth)
+      .put(this.singularEndpoint(id), resource, this.auth)
       .then(() => true)
       .catch(() => false);
   }
 
   async delete(id: number) {
     return this.httpClient
-      .delete(`/${this.resource.singular}/${id}`, this.auth)
+      .delete(this.singularEndpoint(id), this.auth)
       .then(() => true)
       .catch(() => false);
   }

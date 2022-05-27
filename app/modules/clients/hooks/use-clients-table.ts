@@ -8,6 +8,8 @@ import {
 } from "@modules/data";
 import { CompleteClient, modalOpened } from "../client.slice";
 import { useAppDispatch } from "@hooks";
+import { deleteById } from "../services";
+import { useRef } from "react";
 
 const columns: Column<keyof CompleteClient>[] = [
   {
@@ -24,6 +26,7 @@ const columns: Column<keyof CompleteClient>[] = [
 
 export const useClientsTable = (token: string, data: CompleteClient[]) => {
   const router = useRouter();
+  const dialogRef = useRef<any | undefined>();
   const dispatch = useAppDispatch();
 
   const actions: Action<CompleteClient>[] = [
@@ -33,6 +36,7 @@ export const useClientsTable = (token: string, data: CompleteClient[]) => {
       text: "Detalhes do cliente",
       onClick(item) {
         dispatch(modalOpened(item));
+        dialogRef.current.showModal();
       },
     },
     {
@@ -58,5 +62,7 @@ export const useClientsTable = (token: string, data: CompleteClient[]) => {
     },
   ];
 
-  return useDataTable<CompleteClient>({ columns, data, actions });
+  const table = useDataTable<CompleteClient>({ columns, data, actions });
+
+  return [table, dialogRef] as const;
 };

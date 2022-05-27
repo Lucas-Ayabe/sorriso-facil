@@ -1,6 +1,7 @@
 import { useAddressForm } from "@modules/address";
-import { useField } from "@modules/forms";
+import { useField, useMultiField } from "@modules/forms";
 import { useRouter } from "next/router";
+import { CgClose } from "react-icons/cg";
 import { create } from "../services";
 
 export const useCreateClient = (token: string) => {
@@ -9,6 +10,7 @@ export const useCreateClient = (token: string) => {
   const name = useField("");
   const age = useField<number | "">("");
   const address = useAddressForm();
+  const telephones = useMultiField();
 
   const onSubmit = async () => {
     const clientData = {
@@ -25,7 +27,11 @@ export const useCreateClient = (token: string) => {
       cep: address.cep.value,
     };
 
-    console.log({ ...clientData, ...addressData });
+    console.log({
+      client: clientData,
+      address: addressData,
+      telephones: telephones.values,
+    });
 
     // await create(token, {
     //   name: name.value,
@@ -42,6 +48,21 @@ export const useCreateClient = (token: string) => {
       onChange: age.onChange,
     },
     ...address,
+    telephones: {
+      ...telephones,
+      mask: "(00) 00000-0000",
+      append: (_: any, index: number) => {
+        return index !== 0 ? (
+          <button
+            type="button"
+            onClick={() => telephones.removeField(index)}
+            className="button--small"
+          >
+            <CgClose />
+          </button>
+        ) : null;
+      },
+    },
     onSubmit,
   };
 };

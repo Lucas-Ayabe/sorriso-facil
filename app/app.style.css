@@ -89,6 +89,19 @@ figure {
   overflow-x: auto;
 }
 
+dialog[open] {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  max-width: 100%;
+}
+
+dialog::backdrop {
+  background: rgb(0, 0, 0, 0.3);
+  backdrop-filter: blur(3px);
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
