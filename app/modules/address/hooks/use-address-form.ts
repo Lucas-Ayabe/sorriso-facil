@@ -1,7 +1,5 @@
-import { useIMask } from "react-imask";
 import { SelectFieldOption, useField, useSelectField } from "@modules/forms";
 import { brazilianStates } from "../constants";
-import { useEffect } from "react";
 
 const options: SelectFieldOption[] = [
   { label: "Escolha um estado", value: "", disabled: true },
@@ -11,7 +9,7 @@ const options: SelectFieldOption[] = [
   })),
 ];
 
-type UseAddressFormProps = Partial<{
+export type UseAddressFormProps = Partial<{
   street: string;
   neighborhood: string;
   number: number | "";
@@ -20,7 +18,7 @@ type UseAddressFormProps = Partial<{
   cep: string;
 }>;
 
-const defaultProps: UseAddressFormProps = {
+export const defaultProps: UseAddressFormProps = {
   street: "",
   neighborhood: "",
   number: "",

@@ -1,68 +1,31 @@
-import { useAddressForm } from "@modules/address";
-import { useField, useMultiField } from "@modules/forms";
 import { useRouter } from "next/router";
-import { CgClose } from "react-icons/cg";
+
+import { telephoneDto } from "@modules/telephones";
+import { getFieldsData } from "@modules/forms";
 import { create } from "../services";
+import { useClientForm } from "./use-client-form";
 
 export const useCreateClient = (token: string) => {
   const router = useRouter();
-
-  const name = useField("");
-  const age = useField<number | "">("");
-  const address = useAddressForm();
-  const telephones = useMultiField();
+  const clientForm = useClientForm();
+  const { name, age, address, telephones } = clientForm;
 
   const onSubmit = async () => {
-    const clientData = {
+    await create(token, {
       name: name.value,
-      age: age.value,
-    };
-
-    const addressData = {
-      street: address.street.value,
-      neighborhood: address.neighborhood.value,
-      number: address.number.value,
-      city: address.city.value,
-      state: address.state.value,
-      cep: address.cep.value,
-    };
-
-    console.log({
-      client: clientData,
-      address: addressData,
-      telephones: telephones.values,
+      age: age.value === "" ? 0 : age.value,
+      address: { ...getFieldsData(address), country: "Brasil" },
+      telephones: telephones.values.map(({ value }) => telephoneDto(value)),
     });
 
-    // await create(token, {
-    //   name: name.value,
-    //   age: age.value === "" ? 0 : age.value,
-    // });
-    //
-    // router.push("/clients");
+    router.push("/clients");
   };
 
   return {
     name,
-    age: {
-      value: age.value,
-      onChange: age.onChange,
-    },
+    age,
     ...address,
-    telephones: {
-      ...telephones,
-      mask: "(00) 00000-0000",
-      append: (_: any, index: number) => {
-        return index !== 0 ? (
-          <button
-            type="button"
-            onClick={() => telephones.removeField(index)}
-            className="button--small"
-          >
-            <CgClose />
-          </button>
-        ) : null;
-      },
-    },
+    telephones,
     onSubmit,
   };
 };

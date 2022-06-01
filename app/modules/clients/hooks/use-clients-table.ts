@@ -55,7 +55,7 @@ export const useClientsTable = (token: string, data: CompleteClient[]) => {
         const confirmDelete = window.confirm("Realmente deseja excluir?");
 
         if (confirmDelete) {
-          // deleteById(token, client.id);
+          deleteById(token, client.id);
           router.reload();
         }
       },

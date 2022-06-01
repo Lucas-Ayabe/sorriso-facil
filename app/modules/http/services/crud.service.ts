@@ -35,15 +35,19 @@ export class CrudService<Entity, Dto> {
     return { headers: auth(this.token) };
   }
 
-  async findAll(): Promise<Entity[]> {
-    const endpoint = `/${this.resource.plural}`;
+  async findAll(customEndpoint?: string): Promise<Entity[]> {
+    const endpoint = customEndpoint
+      ? customEndpoint
+      : `/${this.resource.plural}`;
     const response = await this.httpClient.get(endpoint, this.auth);
 
     return response.data.content;
   }
 
-  findById(id: number) {
-    const endpoint = `/${this.resource.singular}/${id}`;
+  findById(id: number, customEndpoint?: string) {
+    const endpoint = customEndpoint
+      ? customEndpoint
+      : `/${this.resource.singular}/${id}`;
 
     return MaybeAsync<Entity>(async () => {
       const { data } = await this.httpClient.get(endpoint, this.auth);
@@ -51,25 +55,36 @@ export class CrudService<Entity, Dto> {
     });
   }
 
-  create(resource: Dto) {
+  create(resource: Dto, customEndpoint?: string) {
+    const endpoint = customEndpoint
+      ? customEndpoint
+      : `/${this.resource.singular}`;
+
     return MaybeAsync<Entity>(async () => {
       const { createdResource } = await this.httpClient
-        .post(`/${this.resource.singular}`, resource, this.auth)
+        .post(endpoint, resource, this.auth)
         .then(({ data }) => ({ createdResource: data as Entity }));
       return createdResource;
     });
   }
 
-  async update(id: number, resource: Dto) {
+  async update(id: number, resource: Dto, customEndpoint?: string) {
+    const endpoint = customEndpoint
+      ? customEndpoint
+      : `/${this.resource.singular}/${id}`;
     return this.httpClient
-      .put(`/${this.resource.singular}/${id}`, resource, this.auth)
+      .put(endpoint, resource, this.auth)
       .then(() => true)
       .catch(() => false);
   }
 
-  async delete(id: number) {
+  async delete(id: number, customEndpoint?: string) {
+    const endpoint = customEndpoint
+      ? customEndpoint
+      : `/${this.resource.singular}/${id}`;
+
     return this.httpClient
-      .delete(`/${this.resource.singular}/${id}`, this.auth)
+      .delete(endpoint, this.auth)
       .then(() => true)
       .catch(() => false);
   }

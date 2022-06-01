@@ -29,6 +29,7 @@ const Clients = ({ user, clients }: ClientsProps) => {
     user.token,
     clients as CompleteClient[]
   );
+  console.log(clients);
 
   return (
     <>
@@ -47,20 +48,34 @@ const Clients = ({ user, clients }: ClientsProps) => {
           <h3>{client.name}</h3>
           <p>{client.age} anos</p>
         </div>
-        <address>
-          {client.address.street}, {client.address.neighborhood},{" "}
-          {client.address.number}, {client.address.city}, {client.address.state}
-          , {client.address.cep}
-        </address>
 
-        <h4>Telefones</h4>
-        <ul style={{ listStylePosition: "inside" }}>
-          {client.telephones.map((telephone) => (
-            <li key={telephone.id}>
-              ({telephone.ddd}) {telephone.number}
-            </li>
-          ))}
-        </ul>
+        <h4>Endereço</h4>
+        {client.contacts ? (
+          <address>
+            {client.contacts?.address?.street},{" "}
+            {client.contacts?.address?.neighborhood},{" "}
+            {client.contacts?.address?.number}, {client.contacts?.address?.city}
+            , {client.contacts?.address?.state}, {client.contacts?.address?.cep}
+          </address>
+        ) : (
+          "Ainda sem endereço cadastrado"
+        )}
+
+        <div>
+          <h4>Telefones</h4>
+
+          {client.contacts ? (
+            <ul style={{ listStylePosition: "inside" }}>
+              {client.contacts?.telephones.map((telephone) => (
+                <li key={telephone.id}>
+                  ({telephone.ddd}) {telephone.number}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            "Ainda sem telefones cadastrados"
+          )}
+        </div>
 
         <button
           className="button--small"

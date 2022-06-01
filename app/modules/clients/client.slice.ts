@@ -1,21 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export interface Address {
-  id: number;
-  street: string;
-  number: number;
-  neighborhood: string;
-  city: string;
-  state: string;
-  country: string;
-  cep: string;
-}
-
-export interface Telephone {
-  id: number;
-  ddd: number;
-  number: string;
-}
+import { Address } from "@modules/address";
+import { Telephone } from "@modules/telephones";
 
 export interface Contacts {
   id: number;
@@ -30,8 +15,10 @@ export interface Client {
 }
 
 export type CompleteClient = Client & {
-  address: Address;
-  telephones: Telephone[];
+  contacts?: {
+    address: Address;
+    telephones: Telephone[];
+  };
 };
 
 export interface ClientState {
@@ -48,17 +35,19 @@ const initialState: ClientState = {
       id: 0,
       name: "",
       age: 0,
-      address: {
-        id: 0,
-        country: "",
-        cep: "",
-        city: "",
-        neighborhood: "",
-        state: "",
-        number: 0,
-        street: "",
+      contacts: {
+        address: {
+          id: 0,
+          country: "",
+          cep: "",
+          city: "",
+          neighborhood: "",
+          state: "",
+          number: 0,
+          street: "",
+        },
+        telephones: [{ id: 0, number: "", ddd: 99 }],
       },
-      telephones: [{ id: 0, number: "", ddd: 99 }],
     },
   },
 };

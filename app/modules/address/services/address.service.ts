@@ -1,5 +1,15 @@
-import { Address } from "@modules/clients";
 import { ChildCrudService } from "@modules/http";
+
+export interface Address {
+  id: number;
+  street: string;
+  number: number;
+  neighborhood: string;
+  city: string;
+  state: string;
+  country: string;
+  cep: string;
+}
 
 export type AddressDto = Omit<Address, "id">;
 

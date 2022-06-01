@@ -89,6 +89,11 @@ figure {
   overflow-x: auto;
 }
 
+dialog {
+  border: none;
+  width: clamp(300px, 40%, 50rem);
+}
+
 dialog[open] {
   position: fixed;
   top: 50%;

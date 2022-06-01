@@ -66,15 +66,17 @@ export class ChildCrudService<Entity, Dto> {
     return `${this.singularGeralEndpoint}/${resourceId}`;
   }
 
-  async findAll(): Promise<Entity[]> {
-    const endpoint = this.pluralGeralEndpoint;
+  async findAll(customEndpoint?: string): Promise<Entity[]> {
+    const endpoint = customEndpoint ? customEndpoint : this.pluralGeralEndpoint;
     const response = await this.httpClient.get(endpoint, this.auth);
 
     return response.data.content;
   }
 
-  findById(id: number) {
-    const endpoint = this.singularEndpoint(id);
+  findById(id: number, customEndpoint?: string) {
+    const endpoint = customEndpoint
+      ? customEndpoint
+      : this.singularEndpoint(id);
 
     return MaybeAsync<Entity>(async () => {
       const { data } = await this.httpClient.get(endpoint, this.auth);
@@ -82,24 +84,35 @@ export class ChildCrudService<Entity, Dto> {
     });
   }
 
-  create(resource: Dto) {
+  create(resource: Dto, customEndpoint?: string) {
+    const endpoint = customEndpoint
+      ? customEndpoint
+      : this.singularGeralEndpoint;
+
     return MaybeAsync<Entity>(async () => {
       return this.httpClient
-        .post(this.singularGeralEndpoint, resource, this.auth)
+        .post(endpoint, resource, this.auth)
         .then(({ data }) => data);
     });
   }
 
-  async update(id: number, resource: Dto) {
+  async update(id: number, resource: Dto, customEndpoint?: string) {
+    const endpoint = customEndpoint
+      ? customEndpoint
+      : this.singularEndpoint(id);
+
     return this.httpClient
-      .put(this.singularEndpoint(id), resource, this.auth)
+      .put(endpoint, resource, this.auth)
       .then(() => true)
       .catch(() => false);
   }
 
-  async delete(id: number) {
+  async delete(id: number, customEndpoint?: string) {
+    const endpoint = customEndpoint
+      ? customEndpoint
+      : this.singularEndpoint(id);
     return this.httpClient
-      .delete(this.singularEndpoint(id), this.auth)
+      .delete(endpoint, this.auth)
       .then(() => true)
       .catch(() => false);
   }
