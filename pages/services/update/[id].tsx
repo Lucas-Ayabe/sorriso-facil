@@ -2,11 +2,7 @@ import Head from "next/head";
 import { ReactElement } from "react";
 import { Dashboard, FormPage } from "@modules/ui";
 
-import {
-  AuthenticatedPageProps,
-  getLoggedUser,
-  withDentistRoute,
-} from "@modules/auth";
+import { withDentistRoute } from "@modules/auth";
 import { Field, NaturalNumberField } from "@modules/forms";
 import { findById, Service, useUpdateService } from "@modules/services";
 

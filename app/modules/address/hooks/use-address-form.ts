@@ -41,7 +41,7 @@ export const useAddressForm = (props = defaultProps) => {
   const neighborhoodField = useField(neighborhood);
   const numberField = useField<number | "">(number);
   const cityField = useField(city);
-  const stateField = useSelectField(options, state);
+  const stateField = useSelectField({ options, initialValue: state });
   const cepField = useField(cep);
 
   return {

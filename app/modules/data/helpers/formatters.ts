@@ -18,6 +18,16 @@ export const columnFormatters = {
       return _.isDate(item) ? item.toLocaleDateString(locale) : "";
     };
   },
+  dateTime: (locale: string) => {
+    return (item: unknown): string => {
+      return _.isDate(item)
+        ? item.toLocaleString(locale, {
+            dateStyle: "short",
+            timeStyle: "short",
+          })
+        : "";
+    };
+  },
   jsonDate: (item: unknown): string => {
     return _.isDate(item) ? item.toJSON() : "";
   },

@@ -1,11 +1,16 @@
 import { SelectFieldOption, SelectFieldProps } from "../components";
 import { useField } from "./use-field";
 
-export const useSelectField = (
-  options: SelectFieldOption[],
-  initialValue?: string
-): SelectFieldProps => {
-  const field = useField<string>(initialValue ?? options[0].value ?? "");
+export interface UseSelectFieldProps {
+  options: SelectFieldOption[];
+  initialValue?: string;
+}
+
+export const useSelectField = ({
+  options,
+  initialValue,
+}: UseSelectFieldProps): SelectFieldProps => {
+  const field = useField<string>(initialValue ?? options[0]?.value ?? "");
 
   return {
     ...field,

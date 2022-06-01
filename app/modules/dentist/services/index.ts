@@ -1,0 +1,1 @@
+export * from "./dentist.service";
