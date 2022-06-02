@@ -6,11 +6,17 @@ import {
   getServerSidePropsReturn,
 } from "@modules/auth";
 import { Dashboard, FormPage } from "@modules/ui";
-import { Field, SelectField } from "@modules/forms";
+import { Field } from "@modules/forms";
 import { findLogged, Dentist } from "@modules/dentist";
-import { Schedule, useUpdateSchedule } from "@modules/schedules";
+import {
+  DateTimeTuple,
+  findById,
+  Schedule,
+  useUpdateSchedule,
+} from "@modules/schedules";
 import { MaybeAsync } from "purify-ts";
 import _ from "lodash";
+import { formatTolocalDate } from "@";
 
 type UpdateProps = {
   id: number;
@@ -20,55 +26,31 @@ type UpdateProps = {
 
 export const getServerSideProps = withDentistRoute(async ({ req, params }) => {
   const id = +(params?.id as string);
-  const user = {
+  const user: { token: string; admin: boolean } = {
     token: req.session.user?.token ?? "",
     admin: req.session.user?.admin ?? false,
   };
 
-  const schedule = {
-    id: 1,
-    client: { id: 1, name: "foo", age: 23, schedules: [] },
-    service: { id: 1, name: "Limpeza", price: 250 },
-    dentist: { id: 1, name: "Jane Doe", email: "jane.doe@example.com" },
-    startTime: "2022-06-30T13:45",
-    endTime: "2022-06-30T14:00",
-  };
-
-  const dentist = {
-    id: 1,
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-    schedules: [],
-    clients: [
-      { id: 1, name: "foo", age: 23, schedules: [] },
-      { id: 2, name: "bar", age: 17, schedules: [] },
-      { id: 3, name: "bazz", age: 28, schedules: [] },
-    ],
-    services: [
-      { id: 1, name: "Limpeza", price: 250 },
-      { id: 2, name: "Manutenção", price: 200.5 },
-    ],
-  };
-
   return getServerSidePropsReturn<UpdateProps>({
     user,
-    maybe: MaybeAsync(async () => ({
-      id,
-      schedule,
-      dentist,
-    })),
+    maybe: MaybeAsync(async ({ liftMaybe }) => {
+      const dentist = await liftMaybe(await findLogged(user.token));
+      const schedule = await liftMaybe(await findById(user.token, id));
+      return {
+        id,
+        dentist,
+        schedule,
+      };
+    }),
     onFailDestination: "/schedules",
   });
 });
 
-const Update = ({
-  user,
-  entity: { dentist, schedule },
-}: Props<UpdateProps>) => {
+const Update = ({ user, entity: { schedule } }: Props<UpdateProps>) => {
   const { startTime, endTime, onSubmit } = useUpdateSchedule(
     user.token,
     schedule.id,
-    _.pick(schedule, ["startTime", "endTime"])
+    _.mapValues(_.pick(schedule, ["startTime", "endTime"]), formatTolocalDate)
   );
 
   return (

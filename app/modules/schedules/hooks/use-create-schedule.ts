@@ -25,27 +25,27 @@ export const useCreateSchedule = (
   });
 
   const onSubmit = async () => {
-    console.log({
-      clientId: mapInputToEntityId(client),
-      serviceId: mapInputToEntityId(service),
-      startTime: startTime.value,
-      endTime: endTime.value,
-    });
-
-    // const createdSchedule = await create(token, {
+    // console.log({
     //   clientId: mapInputToEntityId(client),
     //   serviceId: mapInputToEntityId(service),
     //   startTime: startTime.value,
     //   endTime: endTime.value,
     // });
 
-    // createdSchedule.caseOf({
-    //   Just: () => router.push("/schedules"),
-    //   Nothing: async () => {
-    //     window.alert("Não foi possível agendar");
-    //     return false;
-    //   },
-    // });
+    const createdSchedule = await create(token, {
+      clientId: mapInputToEntityId(client),
+      serviceId: mapInputToEntityId(service),
+      startTime: startTime.value,
+      endTime: endTime.value,
+    });
+
+    createdSchedule.caseOf({
+      Just: () => router.push("/schedules"),
+      Nothing: async () => {
+        window.alert("Não foi possível agendar");
+        return false;
+      },
+    });
   };
 
   return {

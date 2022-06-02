@@ -9,7 +9,6 @@ import { Dashboard, FormPage } from "@modules/ui";
 import { Field, SelectField } from "@modules/forms";
 import { findLogged, Dentist } from "@modules/dentist";
 import { useCreateSchedule } from "@modules/schedules";
-import { MaybeAsync } from "purify-ts";
 
 type CreateProps = Props<Dentist>;
 export const getServerSideProps = withDentistRoute(async ({ req }) => {
@@ -20,21 +19,7 @@ export const getServerSideProps = withDentistRoute(async ({ req }) => {
 
   return getServerSidePropsReturn<Dentist>({
     user,
-    maybe: MaybeAsync(async () => ({
-      id: 1,
-      name: "Jane Doe",
-      email: "jane.doe@example.com",
-      schedules: [],
-      clients: [
-        { id: 1, name: "foo", age: 23, schedules: [] },
-        { id: 2, name: "bar", age: 17, schedules: [] },
-        { id: 3, name: "bazz", age: 28, schedules: [] },
-      ],
-      services: [
-        { id: 1, name: "Limpeza", price: 250 },
-        { id: 2, name: "Manutenção", price: 200.5 },
-      ],
-    })),
+    maybe: findLogged(user.token),
     onFailDestination: "/schedules",
   });
 });

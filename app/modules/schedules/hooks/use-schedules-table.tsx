@@ -5,11 +5,10 @@ import {
   useDataTable,
   Column,
 } from "@modules/data";
-import { Dentist } from "@modules/dentist";
 import { Service } from "@modules/services";
 import { useRouter } from "next/router";
 import { CgPen, CgTrash } from "react-icons/cg";
-import { DateTimeString, Schedule } from "../schedule.slice";
+import { DateTimeTuple, Schedule } from "../schedule.slice";
 import { deleteById } from "../services";
 
 const asDateTime = as.dateTime("pt-BR");
@@ -27,12 +26,12 @@ const columns: Column<keyof Schedule>[] = [
   {
     acessor: "startTime",
     label: "Início",
-    format: (time: string) => asDateTime(new Date(time)),
+    format: (time: DateTimeTuple) => asDateTime(new Date(...time)),
   },
   {
     acessor: "endTime",
     label: "Fim",
-    format: (time: string) => asDateTime(new Date(time)),
+    format: (time: DateTimeTuple) => asDateTime(new Date(...time)),
   },
 ];
 
@@ -51,11 +50,11 @@ export const useSchedulesTable = (token: string, data: Schedule[]) => {
       id: "delete-schedule",
       icon: CgTrash,
       text: "Excluir agendamento",
-      onClick(schedule) {
+      onClick: async (schedule) => {
         const confirmDelete = window.confirm("Realmente deseja excluir?");
 
         if (confirmDelete) {
-          // deleteById(token, schedule.id);
+          await deleteById(token, schedule.id);
           router.reload();
         }
       },

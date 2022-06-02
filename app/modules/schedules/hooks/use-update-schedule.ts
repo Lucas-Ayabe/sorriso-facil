@@ -21,21 +21,16 @@ export const useUpdateSchedule = (
   });
 
   const onSubmit = async () => {
-    console.log({
+    const isUpdated = await updateById(token, id, {
       startTime: startTime.value,
       endTime: endTime.value,
     });
 
-    // const isUpdated = await updateById(token, id, {
-    //   startTime: startTime.value,
-    //   endTime: endTime.value,
-    // });
-
-    // if (isUpdated) {
-    //   router.push("/schedules");
-    // } else {
-    //   window.alert("Erro ao atualizar!");
-    // }
+    if (isUpdated) {
+      router.push("/schedules");
+    } else {
+      window.alert("Erro ao atualizar!");
+    }
   };
 
   return {

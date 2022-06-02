@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { MaybeAsync } from "purify-ts";
+import { Maybe, MaybeAsync } from "purify-ts";
 import { CrudService } from "@modules/http";
 import { DateTimeString, Schedule } from "../schedule.slice";
 
@@ -28,35 +28,15 @@ const scheduleRepository = (token: string) => {
 };
 
 export const findAll = async (token: string): Promise<Schedule[]> => {
-  // return scheduleRepository(token).findAll();
-  return [
-    {
-      id: 1,
-      client: {
-        id: 1,
-        name: "Foo",
-        age: 34,
-      },
-      dentist: {
-        id: 1,
-        name: "Jane Doe",
-        email: "jane.doe@example.com",
-      },
-      service: {
-        id: 1,
-        name: "Limpeza",
-        price: 220,
-      },
-      startTime: "2022-06-30T13:47",
-      endTime: "2022-06-30T14:02",
-    },
-  ];
+  return scheduleRepository(token).findAll();
 };
 
 export const findById = (token: string, id: number) => {
-  return MaybeAsync(async () => {
+  return MaybeAsync(async ({ liftMaybe }) => {
     const schedules = await scheduleRepository(token).findAll();
-    return schedules.find((schedule) => schedule.id === id);
+    const findedSchedule = schedules.find((schedule) => schedule.id === id);
+
+    return liftMaybe(Maybe.fromNullable(findedSchedule));
   });
 };
 
