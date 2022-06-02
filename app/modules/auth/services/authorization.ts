@@ -46,6 +46,10 @@ export const withDentistRoute = (handler: GetServerSideProps) => {
   }, sessionOptions);
 };
 
+export const withSessionRoute = (handler: GetServerSideProps) => {
+  return withSession(handler, sessionOptions);
+};
+
 export const getLoggedUser = async (ctx: any) => {
   return {
     props: {
