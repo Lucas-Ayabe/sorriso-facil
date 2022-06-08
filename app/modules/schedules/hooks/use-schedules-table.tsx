@@ -1,3 +1,4 @@
+import { dateTimeTupleToISO } from "@/helpers";
 import { CompleteClient } from "@modules/clients";
 import {
   Action,
@@ -6,6 +7,7 @@ import {
   Column,
 } from "@modules/data";
 import { Service } from "@modules/services";
+import { DateTime } from "luxon";
 import { useRouter } from "next/router";
 import { CgPen, CgTrash } from "react-icons/cg";
 import { DateTimeTuple, Schedule } from "../schedule.slice";
@@ -26,12 +28,30 @@ const columns: Column<keyof Schedule>[] = [
   {
     acessor: "startTime",
     label: "Início",
-    format: (time: DateTimeTuple) => asDateTime(new Date(...time)),
+    format: (date: DateTimeTuple) => {
+      const formatted = DateTime.fromJSDate(
+        new Date(dateTimeTupleToISO(date)),
+        { zone: "utc" }
+      )
+        .setLocale("pt-BR")
+        .toLocaleString(DateTime.DATETIME_SHORT);
+
+      return formatted;
+    },
   },
   {
     acessor: "endTime",
     label: "Fim",
-    format: (time: DateTimeTuple) => asDateTime(new Date(...time)),
+    format: (date: DateTimeTuple) => {
+      const formatted = DateTime.fromJSDate(
+        new Date(dateTimeTupleToISO(date)),
+        { zone: "utc" }
+      )
+        .setLocale("pt-BR")
+        .toLocaleString(DateTime.DATETIME_SHORT);
+
+      return formatted;
+    },
   },
 ];
 

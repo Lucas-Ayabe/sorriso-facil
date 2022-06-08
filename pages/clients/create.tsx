@@ -34,7 +34,7 @@ const Create = ({ user }: CreateProps) => {
   } = useCreateClient(user.token);
 
   return (
-    <FormPage title="Criar Cliente" onSubmit={onSubmit}>
+    <FormPage title="Criar cliente" onSubmit={onSubmit}>
       <Field {...name} inputId="create-client-name">
         Nome
       </Field>

@@ -16,7 +16,7 @@ import {
 } from "@modules/schedules";
 import { MaybeAsync } from "purify-ts";
 import _ from "lodash";
-import { formatTolocalDate } from "@";
+import { dateTimeTupleToISO, formatTolocalDate } from "@";
 
 type UpdateProps = {
   id: number;
@@ -50,11 +50,14 @@ const Update = ({ user, entity: { schedule } }: Props<UpdateProps>) => {
   const { startTime, endTime, onSubmit } = useUpdateSchedule(
     user.token,
     schedule.id,
-    _.mapValues(_.pick(schedule, ["startTime", "endTime"]), formatTolocalDate)
+    _.mapValues(
+      _.pick(schedule, ["startTime", "endTime"]),
+      (date: DateTimeTuple) => dateTimeTupleToISO(date).replace("Z", "")
+    )
   );
 
   return (
-    <FormPage title="Editar Agendamento" onSubmit={onSubmit}>
+    <FormPage title="Atualizar agendamento" onSubmit={onSubmit}>
       <Field {...startTime} type="datetime-local">
         Data de início
       </Field>
@@ -62,7 +65,7 @@ const Update = ({ user, entity: { schedule } }: Props<UpdateProps>) => {
         Data de fim
       </Field>
 
-      <button className="button">Editar Agendamento</button>
+      <button className="button">Atualizar agendamento</button>
     </FormPage>
   );
 };

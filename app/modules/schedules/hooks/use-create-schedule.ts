@@ -25,13 +25,6 @@ export const useCreateSchedule = (
   });
 
   const onSubmit = async () => {
-    // console.log({
-    //   clientId: mapInputToEntityId(client),
-    //   serviceId: mapInputToEntityId(service),
-    //   startTime: startTime.value,
-    //   endTime: endTime.value,
-    // });
-
     const createdSchedule = await create(token, {
       clientId: mapInputToEntityId(client),
       serviceId: mapInputToEntityId(service),

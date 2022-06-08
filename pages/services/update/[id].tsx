@@ -63,7 +63,7 @@ const Update = ({ user, service }: UpdateProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <FormPage title="Criar serviço" onSubmit={onSubmit}>
+      <FormPage title="Atualizar serviço" onSubmit={onSubmit}>
         <Field {...name} inputId="update-service-name">
           Nome
         </Field>

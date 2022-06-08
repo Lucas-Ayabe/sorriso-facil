@@ -48,9 +48,9 @@ export const getServerSideProps = withDentistRoute(async ({ req, params }) => {
     }),
   });
 });
-type CreateProps = AuthenticatedPageProps & Props;
+type UpdateProps = AuthenticatedPageProps & Props;
 
-const Update = ({ user, client }: CreateProps) => {
+const Update = ({ user, client }: UpdateProps) => {
   const {
     name,
     age,
@@ -65,7 +65,7 @@ const Update = ({ user, client }: CreateProps) => {
   } = useUpdateClient(user.token, client.id, client);
 
   return (
-    <FormPage title="Atualizar Cliente" onSubmit={onSubmit}>
+    <FormPage title="Atualizar cliente" onSubmit={onSubmit}>
       <Field {...name} inputId="update-client-name">
         Nome
       </Field>
@@ -123,12 +123,12 @@ const Update = ({ user, client }: CreateProps) => {
         />
       </fieldset>
 
-      <button className="button">Ataulizar cliente</button>
+      <button className="button">Atualizar cliente</button>
     </FormPage>
   );
 };
 
-Update.getLayout = (page: ReactElement, { user }: CreateProps) => (
+Update.getLayout = (page: ReactElement, { user }: UpdateProps) => (
   <Dashboard isAdmin={user.admin}>{page}</Dashboard>
 );
 

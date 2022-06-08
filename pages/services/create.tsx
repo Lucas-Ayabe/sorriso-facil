@@ -34,7 +34,7 @@ const Create = ({ user }: CreateProps) => {
         <NumberField {...price} inputId="create-service-price">
           Preço
         </NumberField>
-        <button className="button">Criar serviço</button>
+        <button className="button">Cadastrar serviço</button>
       </FormPage>
     </>
   );

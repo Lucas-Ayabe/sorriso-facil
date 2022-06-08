@@ -9,3 +9,17 @@ export const formatTolocalDate = (value: string | DateTimeTuple) => {
   const date = new Date(offsetDate).toISOString();
   return date.substring(0, 16);
 };
+
+export const dateTimeTupleToISO = ([
+  year,
+  month,
+  day,
+  hour,
+  minute,
+]: DateTimeTuple) => {
+  return `${year}-${month.toString().padStart(2, "0")}-${day
+    .toString()
+    .padStart(2, "0")}T${hour.toString().padStart(2, "0")}:${minute
+    .toString()
+    .padStart(2, "0")}Z`;
+};
