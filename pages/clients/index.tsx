@@ -29,7 +29,6 @@ const Clients = ({ user, clients }: ClientsProps) => {
     user.token,
     clients as CompleteClient[]
   );
-  console.log(clients);
 
   return (
     <>

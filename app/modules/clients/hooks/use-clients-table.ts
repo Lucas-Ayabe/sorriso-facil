@@ -51,11 +51,11 @@ export const useClientsTable = (token: string, data: CompleteClient[]) => {
       id: "delete-client",
       icon: CgTrash,
       text: "Excluir cliente",
-      onClick(client) {
+      async onClick(client) {
         const confirmDelete = window.confirm("Realmente deseja excluir?");
 
         if (confirmDelete) {
-          deleteById(token, client.id);
+          await deleteById(token, client.id);
           router.reload();
         }
       },
